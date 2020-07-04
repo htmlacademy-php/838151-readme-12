@@ -39,6 +39,25 @@ $posts = [
         'avatar' => 'userpic.jpg'
     ]
 ];
+
+function cut_text($text, $len = 300)
+{
+    if (strlen($text) < $len) {
+        echo '<p>' . $text . '</p>';
+    } else {
+        $words = explode(" ", $text);
+        $new_text = [];
+        $count = 0;
+        for ($i = 0; $count < $len; $i++) {
+            $count += (strlen($words[$i]));
+            $new_text[] = $words[$i];
+        };
+        echo '<p>' . implode(" ", $new_text) . " ..." . '</p>
+              <a class="post-text__more-link" href="#">Читать далее</a>';
+    }
+}
+
+;
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -344,11 +363,12 @@ $posts = [
                             </blockquote>
                             <?php break; ?>
                         <?php case 'post-text': ?>
-                            <p><?= $val['content'] ?></p>
+                            <?php cut_text($val['content']); ?>
                             <?php break; ?>
                         <?php case 'post-photo': ?>
                             <div class="post-photo__image-wrapper">
-                                <img src="img/<?= $val['content'] ?>" alt="Фото от пользователя" width="360" height="240">
+                                <img src="img/<?= $val['content'] ?>" alt="Фото от пользователя" width="360"
+                                     height="240">
                             </div>
                             <?php break; ?>
                         <?php case 'post-link': ?>

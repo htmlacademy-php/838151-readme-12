@@ -152,7 +152,7 @@
                             <div class="post__info">
                                 <b class="post__author-name"><?= $val['user'] ?></b>
                                 <time class="post__time"
-                                      datetime="<?php print(generate_random_date($key)); ?>"><?php print(generate_random_date($key)); ?></time>
+                                      datetime="<?php print(generate_random_date($key)); ?>"><?php check_time(generate_random_date($key)); ?></time>
                             </div>
                         </a>
                     </div>
@@ -184,19 +184,3 @@
         <?php endforeach; ?>
     </div>
 </div>
-
-<?php
-date_default_timezone_set('Europe/Moscow');
-
-$current_date = date_create("now");
-$random_date = date_create(generate_random_date(4));
-
-
-$diff = date_diff($current_date, $random_date);
-$days_count = date_interval_format($diff, 'Y/m/d H:iP');
-echo date_format($diff, 'Y/m/d H:iP');
-print(date_interval_format($diff, '%y, %m, %d, %h'));
-
-
-
-?>

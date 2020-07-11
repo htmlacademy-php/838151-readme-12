@@ -104,7 +104,8 @@
                         <?php break; ?>
                     <?php case 'post-photo': ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?= htmlspecialchars($val['content']); ?>" alt="Фото от пользователя" width="360"
+                            <img src="img/<?= htmlspecialchars($val['content']); ?>" alt="Фото от пользователя"
+                                 width="360"
                                  height="240">
                         </div>
                         <?php break; ?>
@@ -150,7 +151,8 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?= $val['user'] ?></b>
-                                <time class="post__time" datetime="">дата</time>
+                                <time class="post__time"
+                                      datetime="<?php print(generate_random_date($key)); ?>"><?php check_time(generate_random_date($key)); ?></time>
                             </div>
                         </a>
                     </div>

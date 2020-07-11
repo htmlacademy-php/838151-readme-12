@@ -80,7 +80,8 @@ function check_time($some_date)
             print($diff->m . ' ' . get_noun_plural_form($diff->m, 'месяц', 'месяца', 'месяцев') . ' назад');
             break;
         case $diff->d >= 7 && $diff->d <= 35:
-            print($diff->d . ' ' . get_noun_plural_form($diff->m, 'неделю', 'недели', 'недель') . ' назад');
+            $week = floor(($diff->d) / 7);
+            print($week . ' ' . get_noun_plural_form($week, 'неделю', 'недели', 'недель') . ' назад');
             break;
         case $diff->d > 0:
             print($diff->d . ' ' . get_noun_plural_form($diff->m, 'день', 'дня', 'дней') . ' назад');

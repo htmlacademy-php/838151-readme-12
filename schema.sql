@@ -83,9 +83,10 @@ CREATE TABLE IF NOT EXISTS `post` (
   `video` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `link` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `count_view` int(11) NOT NULL DEFAULT '0',
+  `likes` int(11) NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL,
   `content_id` int(11) NOT NULL,
-  `hashtag_id` int(11) NOT NULL,
+  `hashtag_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_user` (`user_id`),
   KEY `FK_content` (`content_id`),
@@ -93,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   CONSTRAINT `FK_content` FOREIGN KEY (`content_id`) REFERENCES `content` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_hashtag` FOREIGN KEY (`hashtag_id`) REFERENCES `hashtag` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- Дамп структуры для таблица readme.roles

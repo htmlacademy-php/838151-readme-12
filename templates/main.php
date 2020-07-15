@@ -41,46 +41,62 @@
                         <span>Все</span>
                     </a>
                 </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--photo button" href="#">
-                        <span class="visually-hidden">Фото</span>
-                        <svg class="filters__icon" width="22" height="18">
-                            <use xlink:href="#icon-filter-photo"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--video button" href="#">
-                        <span class="visually-hidden">Видео</span>
-                        <svg class="filters__icon" width="24" height="16">
-                            <use xlink:href="#icon-filter-video"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--text button" href="#">
-                        <span class="visually-hidden">Текст</span>
-                        <svg class="filters__icon" width="20" height="21">
-                            <use xlink:href="#icon-filter-text"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--quote button" href="#">
-                        <span class="visually-hidden">Цитата</span>
-                        <svg class="filters__icon" width="21" height="20">
-                            <use xlink:href="#icon-filter-quote"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--link button" href="#">
-                        <span class="visually-hidden">Ссылка</span>
-                        <svg class="filters__icon" width="21" height="18">
-                            <use xlink:href="#icon-filter-link"></use>
-                        </svg>
-                    </a>
-                </li>
+
+                <?php foreach ($type_cont as $key => $val): ?>
+                    <li class="popular__filters-item filters__item">
+                        <a class="filters__button filters__button--<?=$val['class_name']?> button" href="#">
+                            <span class="visually-hidden"><?=$val['title']?></span>
+                            <svg class="filters__icon" width="22" height="18">
+                                <use xlink:href="#icon-filter-<?=$val['class_name']?>"></use>
+                            </svg>
+                        </a>
+                    </li>
+                <?php endforeach;?>
+
+
+
+
+
+<!--                <li class="popular__filters-item filters__item">-->
+<!--                    <a class="filters__button filters__button--photo button" href="#">-->
+<!--                        <span class="visually-hidden">Фото</span>-->
+<!--                        <svg class="filters__icon" width="22" height="18">-->
+<!--                            <use xlink:href="#icon-filter-photo"></use>-->
+<!--                        </svg>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="popular__filters-item filters__item">-->
+<!--                    <a class="filters__button filters__button--video button" href="#">-->
+<!--                        <span class="visually-hidden">Видео</span>-->
+<!--                        <svg class="filters__icon" width="24" height="16">-->
+<!--                            <use xlink:href="#icon-filter-video"></use>-->
+<!--                        </svg>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="popular__filters-item filters__item">-->
+<!--                    <a class="filters__button filters__button--text button" href="#">-->
+<!--                        <span class="visually-hidden">Текст</span>-->
+<!--                        <svg class="filters__icon" width="20" height="21">-->
+<!--                            <use xlink:href="#icon-filter-text"></use>-->
+<!--                        </svg>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="popular__filters-item filters__item">-->
+<!--                    <a class="filters__button filters__button--quote button" href="#">-->
+<!--                        <span class="visually-hidden">Цитата</span>-->
+<!--                        <svg class="filters__icon" width="21" height="20">-->
+<!--                            <use xlink:href="#icon-filter-quote"></use>-->
+<!--                        </svg>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="popular__filters-item filters__item">-->
+<!--                    <a class="filters__button filters__button--link button" href="#">-->
+<!--                        <span class="visually-hidden">Ссылка</span>-->
+<!--                        <svg class="filters__icon" width="21" height="18">-->
+<!--                            <use xlink:href="#icon-filter-link"></use>-->
+<!--                        </svg>-->
+<!--                    </a>-->
+<!--                </li>-->
             </ul>
         </div>
     </div>
@@ -91,7 +107,7 @@
                     <h2><?= htmlspecialchars($val['title']); ?></h2>
                 </header>
                 <div class="post__main">
-                    <?php switch ($val['type']): ?><?php case 'post-quote': ?>
+                    <?php switch ($val['title']): ?><?php case 'post-quote': ?>
                         <blockquote>
                             <p>
                                 <?= htmlspecialchars($val['content']); ?>
@@ -150,7 +166,7 @@
                                      alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?= $val['user'] ?></b>
+                                <b class="post__author-name"><?= $val['author'] ?></b>
                                 <time class="post__time"
                                       datetime="<?php print(generate_random_date($key)); ?>"><?php check_time(generate_random_date($key)); ?></time>
                             </div>

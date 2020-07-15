@@ -2,7 +2,7 @@
 $is_auth = rand(0, 1);
 
 $user_name = 'Кирилл'; // укажите здесь ваше имя
-$posts_array = [
+/*$posts_array = [
     [
         'title' => 'Цитата',
         'type' => 'post-quote',
@@ -38,7 +38,7 @@ $posts_array = [
         'user' => 'Владик',
         'avatar' => 'userpic.jpg'
     ]
-];
+];*/
 
 function cut_text($text, $len = 300)
 {
@@ -59,9 +59,47 @@ function cut_text($text, $len = 300)
 
 ;
 
+$link = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
+mysqli_set_charset($link, "utf8");
+
+function content($link)
+{
+    if (!$link) {
+        $error = mysqli_connect_error();
+        print($error);
+    } else {
+        $sql = 'SELECT `*` FROM content';
+        $result = mysqli_query($link, $sql);
+        $type_content = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $type_content;
+    };
+}
+
+;
+
+$type_content = content($link);
+
+function posts($link)
+{
+    if (!$link) {
+        $error = mysqli_connect_error();
+        print($error);
+    } else {
+        $sql = 'SELECT `*` FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id ORDER BY post.count_view DESC';
+        $result = mysqli_query($link, $sql);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    };
+}
+
+;
+
+$posts_array = posts($link);
+print_r($posts_array);
+
+
 require_once('helpers.php');
 
-$page_content = include_template('/main.php', ['posts' => $posts_array]);
+$page_content = include_template('/main.php', ['posts' => $posts_array, 'type_cont' => $type_content]);
 
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
 
@@ -92,10 +130,18 @@ function check_time($some_date)
         case $diff->i > 0:
             print($diff->i . ' ' . get_noun_plural_form($diff->m, 'минуту', 'минуты', 'минут') . ' назад');
             break;
+
+
     };
 
 }
 
 ;
+
+
+([0] => array([id] => 5 [date] => 2015 - 12 - 05 12:05:14 [title] => Ссылка [text] => [author] => Владик [picture] => [video] => [link] => www . htmlacademy . ru [count_view] => 12 [likes] => 0 [user_id] => 2 [content_id] => 5 [hashtag_id] => [registration_date] => 2017 - 05 - 09 13:06:14 [email] => vladik@mail . ru [login] => Vladik [password] => 654321 [avatar] => userpic . jpg [class_name] => link )
+[1] => array([id] => 3 [date] => 2015 - 12 - 05 12:05:14 [title] => Картинка [text] => [author] => Лариса [picture] => coast - medium . jpg [video] => [link] => [count_view] => 12 [likes] => 0 [user_id] => 1 [content_id] => 3 [hashtag_id] => [registration_date] => 2014 - 12 - 05 12:05:14 [email] => larisa@mail . ru [login] => Larisa [password] => 123456 [avatar] => userpic - larisa - small . jpg [class_name] => photo ) [2] => array([id] => 1 [date] => 2015 - 12 - 05 12:05:14 [title] => Текст [text] => Не могу дождаться начала финального сезона своего любимого сериала![author] => Владик [picture] => [video] => [link] => [count_view] => 8 [likes] => 0 [user_id] => 2 [content_id] => 1 [hashtag_id] => [registration_date] => 2017 - 05 - 09 13:06:14 [email] => vladik@mail . ru [login] => Vladik [password] => 654321 [avatar] => userpic . jpg [class_name] => text ) [3] => array([id] => 3 [date] => 2015 - 12 - 05 12:05:14 [title] => Картинка [text] => [author] => Виктор [picture] => rock - medium . jpg [video] => [link] => [count_view] => 6 [likes] => 0 [user_id] => 3 [content_id] => 3 [hashtag_id] => [registration_date] => 2017 - 05 - 09 13:06:14 [email] => viktor@mail . ru [login] => Viktor [password] => 654321 [avatar] => userpic - mark . jpg [class_name] => photo ) [4] => array([id] => 2 [date] => 2015 - 12 - 05 12:05:14 [title] => Цитата [text] => Мы в жизни любим только раз, а после ищем лишь похожих [author] => Лариса [picture] => [video] => [link] => [count_view] => 5 [likes] => 1 [user_id] => 1 [content_id] => 2 [hashtag_id] => [registration_date] => 2014 - 12 - 05 12:05:14 [email] => larisa@mail . ru [login] => Larisa [password] => 123456 [avatar] => userpic - larisa - small . jpg [class_name] => quote ) )
+
+
 
 

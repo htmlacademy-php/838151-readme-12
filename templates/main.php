@@ -44,59 +44,56 @@
 
                 <?php foreach ($type_cont as $key => $val): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?=$val['class_name']?> button" href="#">
-                            <span class="visually-hidden"><?=$val['title']?></span>
+                        <a class="filters__button filters__button--<?= $val['class_name'] ?> button" href="#">
+                            <span class="visually-hidden"><?= $val['title'] ?></span>
                             <svg class="filters__icon" width="22" height="18">
-                                <use xlink:href="#icon-filter-<?=$val['class_name']?>"></use>
+                                <use xlink:href="#icon-filter-<?= $val['class_name'] ?>"></use>
                             </svg>
                         </a>
                     </li>
-                <?php endforeach;?>
+                <?php endforeach; ?>
 
 
-
-
-
-<!--                <li class="popular__filters-item filters__item">-->
-<!--                    <a class="filters__button filters__button--photo button" href="#">-->
-<!--                        <span class="visually-hidden">Фото</span>-->
-<!--                        <svg class="filters__icon" width="22" height="18">-->
-<!--                            <use xlink:href="#icon-filter-photo"></use>-->
-<!--                        </svg>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li class="popular__filters-item filters__item">-->
-<!--                    <a class="filters__button filters__button--video button" href="#">-->
-<!--                        <span class="visually-hidden">Видео</span>-->
-<!--                        <svg class="filters__icon" width="24" height="16">-->
-<!--                            <use xlink:href="#icon-filter-video"></use>-->
-<!--                        </svg>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li class="popular__filters-item filters__item">-->
-<!--                    <a class="filters__button filters__button--text button" href="#">-->
-<!--                        <span class="visually-hidden">Текст</span>-->
-<!--                        <svg class="filters__icon" width="20" height="21">-->
-<!--                            <use xlink:href="#icon-filter-text"></use>-->
-<!--                        </svg>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li class="popular__filters-item filters__item">-->
-<!--                    <a class="filters__button filters__button--quote button" href="#">-->
-<!--                        <span class="visually-hidden">Цитата</span>-->
-<!--                        <svg class="filters__icon" width="21" height="20">-->
-<!--                            <use xlink:href="#icon-filter-quote"></use>-->
-<!--                        </svg>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li class="popular__filters-item filters__item">-->
-<!--                    <a class="filters__button filters__button--link button" href="#">-->
-<!--                        <span class="visually-hidden">Ссылка</span>-->
-<!--                        <svg class="filters__icon" width="21" height="18">-->
-<!--                            <use xlink:href="#icon-filter-link"></use>-->
-<!--                        </svg>-->
-<!--                    </a>-->
-<!--                </li>-->
+                <!--                <li class="popular__filters-item filters__item">-->
+                <!--                    <a class="filters__button filters__button--photo button" href="#">-->
+                <!--                        <span class="visually-hidden">Фото</span>-->
+                <!--                        <svg class="filters__icon" width="22" height="18">-->
+                <!--                            <use xlink:href="#icon-filter-photo"></use>-->
+                <!--                        </svg>-->
+                <!--                    </a>-->
+                <!--                </li>-->
+                <!--                <li class="popular__filters-item filters__item">-->
+                <!--                    <a class="filters__button filters__button--video button" href="#">-->
+                <!--                        <span class="visually-hidden">Видео</span>-->
+                <!--                        <svg class="filters__icon" width="24" height="16">-->
+                <!--                            <use xlink:href="#icon-filter-video"></use>-->
+                <!--                        </svg>-->
+                <!--                    </a>-->
+                <!--                </li>-->
+                <!--                <li class="popular__filters-item filters__item">-->
+                <!--                    <a class="filters__button filters__button--text button" href="#">-->
+                <!--                        <span class="visually-hidden">Текст</span>-->
+                <!--                        <svg class="filters__icon" width="20" height="21">-->
+                <!--                            <use xlink:href="#icon-filter-text"></use>-->
+                <!--                        </svg>-->
+                <!--                    </a>-->
+                <!--                </li>-->
+                <!--                <li class="popular__filters-item filters__item">-->
+                <!--                    <a class="filters__button filters__button--quote button" href="#">-->
+                <!--                        <span class="visually-hidden">Цитата</span>-->
+                <!--                        <svg class="filters__icon" width="21" height="20">-->
+                <!--                            <use xlink:href="#icon-filter-quote"></use>-->
+                <!--                        </svg>-->
+                <!--                    </a>-->
+                <!--                </li>-->
+                <!--                <li class="popular__filters-item filters__item">-->
+                <!--                    <a class="filters__button filters__button--link button" href="#">-->
+                <!--                        <span class="visually-hidden">Ссылка</span>-->
+                <!--                        <svg class="filters__icon" width="21" height="18">-->
+                <!--                            <use xlink:href="#icon-filter-link"></use>-->
+                <!--                        </svg>-->
+                <!--                    </a>-->
+                <!--                </li>-->
             </ul>
         </div>
     </div>
@@ -107,25 +104,25 @@
                     <h2><?= htmlspecialchars($val['title']); ?></h2>
                 </header>
                 <div class="post__main">
-                    <?php switch ($val['title']): ?><?php case 'post-quote': ?>
+                    <?php switch ($val['content_id']): ?><?php case '2': ?>
                         <blockquote>
                             <p>
-                                <?= htmlspecialchars($val['content']); ?>
+                                <?= htmlspecialchars($val['text']); ?>
                             </p>
-                            <cite><?= htmlspecialchars($val['user']); ?></cite>
+                            <cite><?= htmlspecialchars($val['author']); ?></cite>
                         </blockquote>
                         <?php break; ?>
-                    <?php case 'post-text': ?>
-                        <?php cut_text(htmlspecialchars($val['content'])); ?>
+                    <?php case '1': ?>
+                        <?php cut_text(htmlspecialchars($val['text'])); ?>
                         <?php break; ?>
-                    <?php case 'post-photo': ?>
+                    <?php case '3': ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?= htmlspecialchars($val['content']); ?>" alt="Фото от пользователя"
+                            <img src="img/<?= htmlspecialchars($val['picture']); ?>" alt="Фото от пользователя"
                                  width="360"
                                  height="240">
                         </div>
                         <?php break; ?>
-                    <?php case 'post-link': ?>
+                    <?php case '5': ?>
                         <div class="post-link__wrapper">
                             <a class="post-link__external" href="http://" title="Перейти по ссылке">
                                 <div class="post-link__info-wrapper">
@@ -137,11 +134,11 @@
                                         <h3><?= htmlspecialchars($val['title']) ?></h3>
                                     </div>
                                 </div>
-                                <span><?= htmlspecialchars($val['content']); ?></span>
+                                <span><?= htmlspecialchars($val['link']); ?></span>
                             </a>
                         </div>
                         <?php break; ?>
-                    <?php case 'post-video': ?>
+                    <?php case '4': ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
                                 <?= embed_youtube_cover(/* вставьте ссылку на видео */); ?>

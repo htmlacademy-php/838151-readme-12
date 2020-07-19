@@ -2,43 +2,6 @@
 $is_auth = rand(0, 1);
 
 $user_name = 'Кирилл'; // укажите здесь ваше имя
-/*$posts_array = [
-    [
-        'title' => 'Цитата',
-        'type' => 'post-quote',
-        'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
-        'user' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg'
-    ],
-    [
-        'title' => 'Игра престолов',
-        'type' => 'post-text',
-        'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
-        'user' => 'Владик',
-        'avatar' => 'userpic.jpg'
-    ],
-    [
-        'title' => 'Наконец, обработал фотки!',
-        'type' => 'post-photo',
-        'content' => 'rock-medium.jpg',
-        'user' => 'Виктор',
-        'avatar' => 'userpic-mark.jpg'
-    ],
-    [
-        'title' => 'Моя мечта',
-        'type' => 'post-photo',
-        'content' => 'coast-medium.jpg',
-        'user' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg'
-    ],
-    [
-        'title' => 'Лучшие курсы',
-        'type' => 'post-link',
-        'content' => 'www.htmlacademy.ru',
-        'user' => 'Владик',
-        'avatar' => 'userpic.jpg'
-    ]
-];*/
 
 function cut_text($text, $len = 300)
 {
@@ -62,13 +25,15 @@ function cut_text($text, $len = 300)
 $link = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
 mysqli_set_charset($link, "utf8");
 
+$ind = $_GET['id'] ?? '';
+
 function content($link)
 {
     if (!$link) {
         $error = mysqli_connect_error();
         print($error);
     } else {
-        $sql = 'SELECT title, class_name FROM content';
+        $sql = 'SELECT id, title, class_name FROM content';
         $result = mysqli_query($link, $sql);
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     };
@@ -76,13 +41,18 @@ function content($link)
 
 ;
 
-function posts($link)
+
+function posts($link, $id)
 {
     if (!$link) {
         $error = mysqli_connect_error();
         print($error);
     } else {
-        $sql = 'SELECT title, text, author, picture, video, link, content_id, avatar FROM post INNER JOIN users ON post.user_id = users.id ORDER BY post.count_view DESC';
+        if ($id) {
+            $sql = "SELECT post.title, post.id as post_id, text, author, picture, video, link, content_id, avatar, class_name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE content.id = $id ORDER BY post.count_view DESC ";
+        } else {
+            $sql = "SELECT post.title, post.id as post_id, text, author, picture, video, link, content_id, avatar, class_name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
+        }
         $result = mysqli_query($link, $sql);
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     };
@@ -93,7 +63,8 @@ function posts($link)
 
 require_once('helpers.php');
 
-$page_content = include_template('/main.php', ['posts' => posts($link), 'type_cont' => content($link)]);
+
+$page_content = include_template('/main.php', ['posts' => posts($link, $ind), 'type_cont' => content($link), 'ind' => $ind]);
 
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
 
@@ -131,6 +102,9 @@ function check_time($some_date)
 }
 
 ;
+
+
+
 
 
 

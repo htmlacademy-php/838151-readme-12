@@ -7,7 +7,7 @@
             <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
             <ul class="popular__sorting-list sorting__list">
                 <li class="sorting__item sorting__item--popular">
-                    <a class="sorting__link sorting__link--active" href="#">
+                    <a class="sorting__link sorting__link--active" href="<?php print("index.php?sort=popular"); ?>">
                         <span>Популярность</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li class="sorting__item">
-                    <a class="sorting__link" href="#">
+                    <a class="sorting__link" href="<?php print("index.php?" . "sort=likes"); ?>">
                         <span>Лайки</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li class="sorting__item">
-                    <a class="sorting__link" href="#">
+                    <a class="sorting__link" href="<?php print("index.php?" . "sort=date"); ?>">
                         <span>Дата</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -44,7 +44,7 @@
 
                 <?php foreach ($type_cont as $key => $val): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?= $val['class_name']; if($ind == $val['id']) {print(' filters__button--active'); }?> button" href="<?php print("index.php?" . "id=" . $val['id'])?>")">
+                        <a class="filters__button filters__button--<?= $val['class_name']; if($ind == $val['id']) {print(' filters__button--active'); }?> button" href="<?php print("index.php?" . "id=" . $val['id'])?>">
                             <span class="visually-hidden"><?= $val['title'] ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?= $val['class_name'] ?>"></use>

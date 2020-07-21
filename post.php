@@ -14,24 +14,30 @@ mysqli_set_charset($link, "utf8");
 function post($link, $id)
 {
     if (!$link) {
-        $error = mysqli_connect_error();
-        print($error);
+        return [];
     } else {
         if ($id) {
-            $sql = "SELECT post.title, text, author, picture, video, link, content_id, avatar, class_name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE post.id = $id ORDER BY post.count_view DESC ";
+            $sql = "SELECT post.title, text, likes, author, picture, video, link, content_id, avatar, class_name, count_view FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE post.id = $id ORDER BY post.count_view DESC ";
             $result = mysqli_query($link, $sql);
-            return mysqli_fetch_all($result, MYSQLI_ASSOC);
-        } else {
-            print('Страница не найдена! 404');
+            if (!$result) {
+                return [];
+            } else {
+                return mysqli_fetch_all($result, MYSQLI_ASSOC);
+            }
         }
     };
 }
 
 ;
 
+$post_text = include_template('/post_text.php', ['post' => post($link, $ind)]);
+$post_link = include_template('/post_link.php', ['post' => post($link, $ind)]);
+$post_photo = include_template('/post_photo.php', ['post' => post($link, $ind)]);
+$post_video = include_template('/post_video.php', ['post' => post($link, $ind)]);
+$post_quote = include_template('/post_quote.php', ['post' => post($link, $ind)]);
 
 
-$page_content = include_template('/post_main.php', ['post' => post($link, $ind)]);
+$page_content = include_template('/post_main.php',  ['post' => post($link, $ind), 'post_text' => $post_text, 'post_video' => $post_video, 'post_photo' => $post_photo, 'post_quote' => $post_quote, 'post_link' => $post_link]);
 
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
 

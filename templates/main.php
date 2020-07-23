@@ -7,7 +7,7 @@
             <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
             <ul class="popular__sorting-list sorting__list">
                 <li class="sorting__item sorting__item--popular">
-                    <a class="sorting__link sorting__link--active" href="#">
+                    <a class="sorting__link sorting__link--active" href="<?php print("index.php?sort=popular"); ?>">
                         <span>Популярность</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li class="sorting__item">
-                    <a class="sorting__link" href="#">
+                    <a class="sorting__link" href="<?php print("index.php?" . "sort=likes"); ?>">
                         <span>Лайки</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li class="sorting__item">
-                    <a class="sorting__link" href="#">
+                    <a class="sorting__link" href="<?php print("index.php?" . "sort=date"); ?>">
                         <span>Дата</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -34,17 +34,17 @@
         </div>
         <div class="popular__filters filters">
             <b class="popular__filters-caption filters__caption">Тип контента:</b>
-            <ul class="popular__filters-list filters__list">
+           <ul class="popular__filters-list filters__list" >
                 <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                    <a class="filters__button filters__button--ellipse filters__button--all filters__button--active"
-                       href="#">
+                    <a class="filters__button filters__button--ellipse filters__button--all <?php if(!$ind) {print('filters__button--active');}?>"
+                       href="index.php">
                         <span>Все</span>
                     </a>
                 </li>
 
                 <?php foreach ($type_cont as $key => $val): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?= $val['class_name'] ?> button" href="#">
+                        <a class="filters__button filters__button--<?= $val['class_name']; if($ind == $val['id']) {print(' filters__button--active'); }?> button" href="<?php print("index.php?" . "id=" . $val['id'])?>">
                             <span class="visually-hidden"><?= $val['title'] ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?= $val['class_name'] ?>"></use>
@@ -52,56 +52,14 @@
                         </a>
                     </li>
                 <?php endforeach; ?>
-
-
-                <!--                <li class="popular__filters-item filters__item">-->
-                <!--                    <a class="filters__button filters__button--photo button" href="#">-->
-                <!--                        <span class="visually-hidden">Фото</span>-->
-                <!--                        <svg class="filters__icon" width="22" height="18">-->
-                <!--                            <use xlink:href="#icon-filter-photo"></use>-->
-                <!--                        </svg>-->
-                <!--                    </a>-->
-                <!--                </li>-->
-                <!--                <li class="popular__filters-item filters__item">-->
-                <!--                    <a class="filters__button filters__button--video button" href="#">-->
-                <!--                        <span class="visually-hidden">Видео</span>-->
-                <!--                        <svg class="filters__icon" width="24" height="16">-->
-                <!--                            <use xlink:href="#icon-filter-video"></use>-->
-                <!--                        </svg>-->
-                <!--                    </a>-->
-                <!--                </li>-->
-                <!--                <li class="popular__filters-item filters__item">-->
-                <!--                    <a class="filters__button filters__button--text button" href="#">-->
-                <!--                        <span class="visually-hidden">Текст</span>-->
-                <!--                        <svg class="filters__icon" width="20" height="21">-->
-                <!--                            <use xlink:href="#icon-filter-text"></use>-->
-                <!--                        </svg>-->
-                <!--                    </a>-->
-                <!--                </li>-->
-                <!--                <li class="popular__filters-item filters__item">-->
-                <!--                    <a class="filters__button filters__button--quote button" href="#">-->
-                <!--                        <span class="visually-hidden">Цитата</span>-->
-                <!--                        <svg class="filters__icon" width="21" height="20">-->
-                <!--                            <use xlink:href="#icon-filter-quote"></use>-->
-                <!--                        </svg>-->
-                <!--                    </a>-->
-                <!--                </li>-->
-                <!--                <li class="popular__filters-item filters__item">-->
-                <!--                    <a class="filters__button filters__button--link button" href="#">-->
-                <!--                        <span class="visually-hidden">Ссылка</span>-->
-                <!--                        <svg class="filters__icon" width="21" height="18">-->
-                <!--                            <use xlink:href="#icon-filter-link"></use>-->
-                <!--                        </svg>-->
-                <!--                    </a>-->
-                <!--                </li>-->
             </ul>
         </div>
     </div>
     <div class="popular__posts">
         <?php foreach ($posts as $key => $val): ?>
-            <article class="popular__post post">
+            <article class="popular__post post post-<?= $val['class_name']?>">
                 <header class="post__header">
-                    <h2><?= htmlspecialchars($val['title']); ?></h2>
+                    <h2><a href="<?php print('post.php?id=' . $val['post_id']);?>"><?= htmlspecialchars($val['title']); ?></a></h2>
                 </header>
                 <div class="post__main">
                     <?php switch ($val['content_id']): ?><?php case '2': ?>

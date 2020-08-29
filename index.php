@@ -49,9 +49,9 @@ function posts($link, $id)
         print($error);
     } else {
         if ($id) {
-            $sql = "SELECT post.title, post.id as post_id, text, author, picture, video, link, content_id, avatar, class_name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE content.id = $id ORDER BY post.count_view DESC ";
+            $sql = "SELECT post.title, post.id as post_id, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE content.id = $id ORDER BY post.count_view DESC ";
         } else {
-            $sql = "SELECT post.title, post.id as post_id, text, author, picture, video, link, content_id, avatar, class_name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
+            $sql = "SELECT post.title, post.id as post_id, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
         }
         $result = mysqli_query($link, $sql);
         return mysqli_fetch_all($result, MYSQLI_ASSOC);

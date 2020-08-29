@@ -67,7 +67,7 @@
                             <p>
                                 <?= htmlspecialchars($val['text']); ?>
                             </p>
-                            <cite><?= htmlspecialchars($val['author']); ?></cite>
+                            <cite><?= htmlspecialchars($val['quote-author']); ?></cite>
                         </blockquote>
                         <?php break; ?>
                     <?php case '1': ?>
@@ -99,8 +99,8 @@
                     <?php case '4': ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
-                                <?= embed_youtube_cover(/* вставьте ссылку на видео */); ?>
-                                <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">
+                                <?= embed_youtube_cover($val['video'] ); ?>
+<!--                                <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">-->
                             </div>
                             <a href="post-details.html" class="post-video__play-big button">
                                 <svg class="post-video__play-big-icon" width="14" height="14">
@@ -121,7 +121,7 @@
                                      alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?= $val['author'] ?></b>
+                                <b class="post__author-name"><?= $val['name'] ?></b>
                                 <time class="post__time"
                                       datetime="<?php print(generate_random_date($key)); ?>"><?php check_time(generate_random_date($key)); ?></time>
                             </div>

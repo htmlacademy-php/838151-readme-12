@@ -17,7 +17,7 @@ function post($link, $id)
         return [];
     } else {
         if ($id) {
-            $sql = "SELECT post.title, text, likes, author, picture, video, link, content_id, avatar, class_name, count_view FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE post.id = $id ORDER BY post.count_view DESC ";
+            $sql = "SELECT post.title, text, likes, name, picture, video, link, content_id, avatar, class_name, count_view FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE post.id = $id ORDER BY post.count_view DESC ";
             $result = mysqli_query($link, $sql);
             if (!$result) {
                 return [];

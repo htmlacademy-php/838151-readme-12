@@ -26,7 +26,8 @@ function content($link)
 
 ;
 
-function type_content($type) {
+function type_content($type)
+{
     switch ($type) {
         case '1':
             return "INSERT INTO post (title, TEXT, DATE, user_id, content_id) VALUES ('{$_POST['post-title']}', '{$_POST['post-text']}', NOW(), '1', '{$_POST['post-type']}');";
@@ -44,10 +45,39 @@ function type_content($type) {
             return "INSERT INTO post (title, DATE, user_id, content_id, link) VALUES ('{$_POST['post-title']}', NOW(), '1', '{$_POST['post-type']}', '{$_POST['post-link']}');";
             break;
     }
-};
+}
 
-function download_photo(){
-    if (isset($_FILES['post-photo'])) {
+;
+
+
+function write_hashtags($str, $link, $last_id)
+{
+    if (!empty($_POST['post-tags'])) {
+        $tags_array = array_diff(explode(' ', $str), array(''));
+        foreach ($tags_array as $val) {
+            $exist_sql = "SELECT * FROM hashtag WHERE title = '$val'";
+            $res = mysqli_fetch_all(mysqli_query($link, $exist_sql), MYSQLI_ASSOC);
+            if ($res[0]['id']) {
+                $hashtag_id = $res[0]['id'];
+                $sql = "INSERT INTO post_hashtag (post_id, hashtag_id) VALUES ('$last_id', '$hashtag_id')";
+                mysqli_query($link, $sql);
+            } else {
+                $sql = "INSERT INTO hashtag (title) VALUES ('$val')";
+                mysqli_query($link, $sql);
+                $new_hashtag_id = mysqli_insert_id($link);
+                $sql = "INSERT INTO post_hashtag (post_id, hashtag_id) VALUES ('$last_id', '$new_hashtag_id')";
+                mysqli_query($link, $sql);
+            }
+        }
+    }
+}
+
+;
+
+
+function download_photo()
+{
+    if ($_FILES['post-photo']) {
         $file_name = $_FILES['post-photo']['name'];
         $file_path = __DIR__ . '/uploads/';
         $file_url = '/uploads/' . $file_name;
@@ -56,19 +86,25 @@ function download_photo(){
 
         print("<a href='$file_url'>$file_name</a>");
     }
-};
+}
+
+;
 
 function write($link)
 {
-    if(!empty($_POST)){
+    if (!empty($_POST)) {
         if (!$link) {
             $error = mysqli_connect_error();
             print($error);
         } else {
+            print_r($_FILES);
+            download_photo();
 
             $sql = type_content("{$_POST['post-type']}");
             $result = mysqli_query($link, $sql);
-            if(!$result){
+            $last_id = mysqli_insert_id($link);
+            write_hashtags($_POST['post-tags'], $link, $last_id);
+            if (!$result) {
                 print(mysqli_error($link));
             };
         };
@@ -78,16 +114,12 @@ function write($link)
 ;
 
 
-
-
 write($link);
-
 
 
 print_r(content($link));
 print('POST ');
 print_r($_POST);
-print_r($_FILES);
 
 
 $post_title = include_template('/add_post_title.php');

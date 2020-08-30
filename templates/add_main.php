@@ -8,7 +8,11 @@
                 <ul class="adding-post__tabs-list filters__list tabs__list">
                     <?php foreach ($type_cont as $key => $val): ?>
                         <li class="adding-post__tabs-item filters__item">
-                            <a class="adding-post__tabs-link filters__button filters__button--<?= $val['class_name'] ?> filters__button--active tabs__item tabs__item--active button">
+                            <a class="adding-post__tabs-link filters__button filters__button--<?= $val['class_name'] ?> <?php if (empty($_POST) && $key == 0) {
+                                print(' filters__button--active ');
+                            } else if (($_POST['post-type'] - 1) == $key) {
+                                print(' filters__button--active ');
+                            }; ?> tabs__item tabs__item--active button">
                                 <svg class="filters__icon" width="22" height="18">
                                     <use xlink:href="#icon-filter-<?= $val['class_name'] ?>"></use>
                                 </svg>
@@ -21,9 +25,11 @@
             <div class="adding-post__tab-content">
                 <?php foreach ($type_cont as $key => $val): ?>
                     <section
-                        class="adding-post__<?= $val['title'] ?> tabs__content tabs__content--<?php if ($key == 0) {
-                            print('active');
-                        }; ?>">
+                        class="adding-post__<?= $val['title'] ?> tabs__content <?php if (empty($_POST) && $key == 0) {
+                            print(' tabs__content--active ');
+                        } else if (($_POST['post-type'] - 1) == $key) {
+                            print(' tabs__content--active ');
+                        } ?>">
                         <h2 class="visually-hidden">
                             <?php switch ($val['id']): ?><?php case 1: ?>
                                 Форма добавления текста
@@ -42,7 +48,8 @@
                                 <? break; ?>
                             <? endswitch; ?>
                         </h2>
-                        <form class="adding-post__form form" action="add.php" method="post" enctype="multipart/form-data">
+                        <form class="adding-post__form form" action="add.php" method="post"
+                              enctype="multipart/form-data">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
                                     <?= $post_title; ?>

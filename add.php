@@ -122,14 +122,18 @@ print('POST ');
 print_r($_POST);
 
 
-$post_title = include_template('/add_post_title.php');
-$post_tags = include_template('/add_post_tags.php');
-$post_text = include_template('/add_post_text.php');
-$post_quote = include_template('/add_post_quote.php');
-$post_author = include_template('/add_post_author.php');
+function getPostVal($name) {
+    return $_POST[$name] ?? "";
+};
+
+$post_title = include_template('/add_post_title.php', ['getPostVal' => getPostVal]);
+$post_tags = include_template('/add_post_tags.php', ['getPostVal' => getPostVal]);
+$post_text = include_template('/add_post_text.php', ['getPostVal' => getPostVal]);
+$post_quote = include_template('/add_post_quote.php', ['getPostVal' => getPostVal]);
+$post_author = include_template('/add_post_author.php', ['getPostVal' => getPostVal]);
 
 
-$page_content = include_template('/add_main.php', ['type_cont' => content($link), 'post_title' => $post_title, 'post_tags' => $post_tags, 'post_text' => $post_text, 'post_quote' => $post_quote, 'post_author' => $post_author]);
+$page_content = include_template('/add_main.php', ['type_cont' => content($link), 'getPostVal' => getPostVal, 'post_title' => $post_title, 'post_tags' => $post_tags, 'post_text' => $post_text, 'post_quote' => $post_quote, 'post_author' => $post_author]);
 
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
 

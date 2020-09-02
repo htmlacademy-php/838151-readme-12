@@ -3,7 +3,7 @@
             class="form__input-required">*</span></label>
     <div class="form__input-section">
         <input class="adding-post__input form__input" id="quote-author" type="text"
-               name="post-quote-author">
+               name="post-quote-author" value="<?= getPostVal('post-quote-author')?>">
         <button class="form__error-button button" type="button">!<span
                 class="visually-hidden">Информация об ошибке</span></button>
         <div class="form__error-text">

@@ -66,7 +66,7 @@
                                                 интернета</label>
                                             <div class="form__input-section">
                                                 <input class="adding-post__input form__input" id="photo-url" type="text"
-                                                       name="photo-heading" placeholder="Введите ссылку">
+                                                       name="post-photo-link" placeholder="Введите ссылку" value="<?= getPostVal('post-photo-link')?>">
                                                 <button class="form__error-button button" type="button">!<span
                                                         class="visually-hidden">Информация об ошибке</span></button>
                                                 <div class="form__error-text">
@@ -85,7 +85,7 @@
                                                     class="form__input-required">*</span></label>
                                             <div class="form__input-section">
                                                 <input class="adding-post__input form__input" id="video-url" type="text"
-                                                       name="post-video" placeholder="Введите ссылку">
+                                                       name="post-video" placeholder="Введите ссылку" value="<?= getPostVal('post-video')?>">
                                                 <button class="form__error-button button" type="button">!<span
                                                         class="visually-hidden">Информация об ошибке</span></button>
                                                 <div class="form__error-text">
@@ -103,7 +103,7 @@
                                                     class="form__input-required">*</span></label>
                                             <div class="form__input-section">
                                                 <input class="adding-post__input form__input" id="post-link" type="text"
-                                                       name="post-link">
+                                                       name="post-link" value="<?= getPostVal('post-link')?>">
                                                 <button class="form__error-button button" type="button">!<span
                                                         class="visually-hidden">Информация об ошибке</span></button>
                                                 <div class="form__error-text">

@@ -4,7 +4,7 @@
     <div class="form__input-section">
                                         <textarea
                                             class="adding-post__textarea adding-post__textarea--quote form__textarea form__input"
-                                            id="cite-text" placeholder="Текст цитаты" name="post-quote-text"></textarea>
+                                            id="cite-text" placeholder="Текст цитаты" name="post-quote-text"><?= getPostVal('post-quote-text')?></textarea>
         <button class="form__error-button button" type="button">!<span
                 class="visually-hidden">Информация об ошибке</span></button>
         <div class="form__error-text">

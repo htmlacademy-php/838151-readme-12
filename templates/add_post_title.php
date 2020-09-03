@@ -1,4 +1,4 @@
-<div class="adding-post__input-wrapper form__input-wrapper">
+<div class="adding-post__input-wrapper form__input-wrapper <?php if(!empty($errors['post-title'])){ print(' form__input-section--error'); } ?> ">
     <label class="adding-post__label form__label" for="photo-heading">Заголовок
         <span
             class="form__input-required">*</span></label>
@@ -9,9 +9,7 @@
                 class="visually-hidden">Информация об ошибке</span></button>
         <div class="form__error-text">
             <h3 class="form__error-title">Заголовок сообщения</h3>
-            <p class="form__error-desc">Текст сообщения об ошибке, подробно
-                объясняющий,
-                что не так.</p>
+            <p class="form__error-desc"><?= $errors['post-title']; ?></p>
         </div>
     </div>
 </div>

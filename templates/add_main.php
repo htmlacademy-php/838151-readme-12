@@ -66,7 +66,8 @@
                                                 интернета</label>
                                             <div class="form__input-section">
                                                 <input class="adding-post__input form__input" id="photo-url" type="text"
-                                                       name="post-photo-link" placeholder="Введите ссылку" value="<?= getPostVal('post-photo-link')?>">
+                                                       name="post-photo-link" placeholder="Введите ссылку"
+                                                       value="<?= getPostVal('post-photo-link') ?>">
                                                 <button class="form__error-button button" type="button">!<span
                                                         class="visually-hidden">Информация об ошибке</span></button>
                                                 <div class="form__error-text">
@@ -79,38 +80,39 @@
                                         </div>
                                         <?php break; ?>
                                     <?php case 'video': ?>
-                                        <div class="adding-post__input-wrapper form__input-wrapper">
+                                        <div class="adding-post__input-wrapper form__input-wrapper <?php if (!empty($errors['post-video'])) {
+                                            print(' form__input-section--error');
+                                        } ?>">
                                             <label class="adding-post__label form__label" for="video-url">Ссылка youtube
                                                 <span
                                                     class="form__input-required">*</span></label>
                                             <div class="form__input-section">
                                                 <input class="adding-post__input form__input" id="video-url" type="text"
-                                                       name="post-video" placeholder="Введите ссылку" value="<?= getPostVal('post-video')?>">
+                                                       name="post-video" placeholder="Введите ссылку"
+                                                       value="<?= getPostVal('post-video') ?>">
                                                 <button class="form__error-button button" type="button">!<span
                                                         class="visually-hidden">Информация об ошибке</span></button>
                                                 <div class="form__error-text">
                                                     <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                    <p class="form__error-desc">Текст сообщения об ошибке, подробно
-                                                        объясняющий,
-                                                        что не так.</p>
+                                                    <p class="form__error-desc"><?= $errors['post-video']; ?></p>
                                                 </div>
                                             </div>
                                         </div>
                                         <?php break; ?>
                                     <?php case 'link': ?>
-                                        <div class="adding-post__textarea-wrapper form__input-wrapper">
+                                        <div class="adding-post__textarea-wrapper form__input-wrapper <?php if (!empty($errors['post-link'])) {
+                                            print(' form__input-section--error');
+                                        } ?>">
                                             <label class="adding-post__label form__label" for="post-link">Ссылка <span
                                                     class="form__input-required">*</span></label>
                                             <div class="form__input-section">
                                                 <input class="adding-post__input form__input" id="post-link" type="text"
-                                                       name="post-link" value="<?= getPostVal('post-link')?>">
+                                                       name="post-link" value="<?= getPostVal('post-link') ?>">
                                                 <button class="form__error-button button" type="button">!<span
                                                         class="visually-hidden">Информация об ошибке</span></button>
                                                 <div class="form__error-text">
                                                     <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                    <p class="form__error-desc">Текст сообщения об ошибке, подробно
-                                                        объясняющий,
-                                                        что не так.</p>
+                                                    <p class="form__error-desc"><?= $errors['post-link']; ?></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -124,7 +126,30 @@
                                 <div class="form__invalid-block">
                                     <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
                                     <ul class="form__invalid-list">
-                                        <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
+                                        <?php foreach ($errors as $key => $value): ?>
+                                            <li class="form__invalid-item">
+                                                <?php switch ($key): ?><?php case 'post-title': ?>
+                                                    Заголовок.
+                                                    <?php break; ?>
+                                                <?php case 'post-text': ?>
+                                                    Текст поста.
+                                                    <?php break; ?>
+                                                <?php case 'post-quote-text': ?>
+                                                    Текст цитаты.
+                                                    <?php break; ?>
+                                                <?php case 'post-quote-author': ?>
+                                                    Автор.
+                                                    <?php break; ?>
+                                                <?php case 'post-link': ?>
+                                                    Ссылка.
+                                                    <?php break; ?>
+                                                <?php case 'post-video': ?>
+                                                    Ссылка.
+                                                    <?php break; ?>
+                                                <?php endswitch; ?>
+                                                <?= $value ?>
+                                            </li>
+                                        <?php endforeach; ?>
                                     </ul>
                                 </div>
                             </div>

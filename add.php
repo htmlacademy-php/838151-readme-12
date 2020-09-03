@@ -99,7 +99,6 @@ function write($link)
         } else {
             print_r($_FILES);
             download_photo();
-
             $sql = type_content("{$_POST['post-type']}");
             $result = mysqli_query($link, $sql);
             $last_id = mysqli_insert_id($link);
@@ -114,26 +113,93 @@ function write($link)
 ;
 
 
-write($link);
+//Проверяем поля на заполненность и соответствие
 
+$errors = [];
 
-print_r(content($link));
-print('POST ');
-print_r($_POST);
+function validateFilled($name)
+{
+    if (empty($_POST[$name])) {
+        return "Это поле должно быть заполнено";
+    }
+}
 
+;
 
-function getPostVal($name) {
-    return $_POST[$name] ?? "";
+function checkVideo($name)
+{
+    if (!filter_var($_POST[$name], FILTER_VALIDATE_URL)) {
+        return check_youtube_url($_POST[$name]);
+    }
 };
 
-$post_title = include_template('/add_post_title.php', ['getPostVal' => getPostVal]);
-$post_tags = include_template('/add_post_tags.php', ['getPostVal' => getPostVal]);
-$post_text = include_template('/add_post_text.php', ['getPostVal' => getPostVal]);
-$post_quote = include_template('/add_post_quote.php', ['getPostVal' => getPostVal]);
-$post_author = include_template('/add_post_author.php', ['getPostVal' => getPostVal]);
+
+$rules = [
+    'post-title' => function () {
+        return validateFilled('post-title');
+    },
+    'post-text' => function () {
+        return validateFilled('post-text');
+    },
+    'post-quote-text' => function () {
+        return validateFilled('post-quote-text');
+    },
+    'post-quote-author' => function () {
+        return validateFilled('post-quote-author');
+    },
+    'post-link' => function () {
+        return validateFilled('post-link');
+    },
+    'post-video' => function () {
+        if (empty($_POST['post-video'])) {
+            return validateFilled('post-video');
+        } else {
+            return checkVideo('post-video');
+        }
+    }
+];
+
+foreach ($_POST as $key => $value) {
+    if (isset($rules[$key])) {
+        $rule = $rules[$key];
+        $errors[$key] = $rule();
+    }
+}
+
+$errors = array_filter($errors);
 
 
-$page_content = include_template('/add_main.php', ['type_cont' => content($link), 'getPostVal' => getPostVal, 'post_title' => $post_title, 'post_tags' => $post_tags, 'post_text' => $post_text, 'post_quote' => $post_quote, 'post_author' => $post_author]);
+if ($_POST && empty($errors)) {
+    write($link);
+} 
+
+print('ERRORS ');
+print_r($errors);
+print('<br>');
+print_r(content($link));
+print('<br>');
+print('POST ');
+print_r($_POST);
+print('<br>');
+print('FILES ');
+print_r($_FILES);
+
+
+function getPostVal($name)
+{
+    return $_POST[$name] ?? "";
+}
+
+;
+
+$post_title = include_template('/add_post_title.php', ['getPostVal' => getPostVal, 'errors' => $errors]);
+$post_tags = include_template('/add_post_tags.php', ['getPostVal' => getPostVal, 'errors' => $errors]);
+$post_text = include_template('/add_post_text.php', ['getPostVal' => getPostVal, 'errors' => $errors]);
+$post_quote = include_template('/add_post_quote.php', ['getPostVal' => getPostVal, 'errors' => $errors]);
+$post_author = include_template('/add_post_author.php', ['getPostVal' => getPostVal, 'errors' => $errors]);
+
+
+$page_content = include_template('/add_main.php', ['type_cont' => content($link), 'errors' => $errors, 'getPostVal' => getPostVal, 'post_title' => $post_title, 'post_tags' => $post_tags, 'post_text' => $post_text, 'post_quote' => $post_quote, 'post_author' => $post_author]);
 
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
 

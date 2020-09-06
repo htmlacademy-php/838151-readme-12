@@ -171,7 +171,7 @@ $errors = array_filter($errors);
 
 if ($_POST && empty($errors)) {
     write($link);
-} 
+}
 
 print('ERRORS ');
 print_r($errors);

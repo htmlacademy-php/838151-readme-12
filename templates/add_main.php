@@ -144,7 +144,7 @@
                                                     Ссылка.
                                                     <?php break; ?>
                                                 <?php case 'post-video': ?>
-                                                    Ссылка.
+                                                    Ссылка YOUTUBE.
                                                     <?php break; ?>
                                                 <?php endswitch; ?>
                                                 <?= $value ?>

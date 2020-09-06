@@ -97,13 +97,14 @@ function write($link)
             $error = mysqli_connect_error();
             print($error);
         } else {
-            print_r($_FILES);
-            download_photo();
+            //print_r($_FILES);
+            //download_photo();
             $sql = type_content("{$_POST['post-type']}");
             $result = mysqli_query($link, $sql);
             $last_id = mysqli_insert_id($link);
             write_hashtags($_POST['post-tags'], $link, $last_id);
             if (!$result) {
+
                 print(mysqli_error($link));
             };
         };
@@ -133,6 +134,12 @@ function checkVideo($name)
     }
 };
 
+function validateURL($name) {
+    if (!filter_var($_POST[$name], FILTER_VALIDATE_URL)) {
+        return "Введите корректную ссылку";
+    }
+};
+
 
 $rules = [
     'post-title' => function () {
@@ -148,7 +155,11 @@ $rules = [
         return validateFilled('post-quote-author');
     },
     'post-link' => function () {
-        return validateFilled('post-link');
+        if (empty($_POST['post-link'])) {
+            return validateFilled('post-link');
+        } else {
+            return validateURL('post-link');
+        }
     },
     'post-video' => function () {
         if (empty($_POST['post-video'])) {
@@ -169,9 +180,16 @@ foreach ($_POST as $key => $value) {
 $errors = array_filter($errors);
 
 
+
 if ($_POST && empty($errors)) {
     write($link);
+    $new_post_id = mysqli_insert_id($link);
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        header("Location: /post.php?id=$new_post_id");
+    }
 }
+
+
 
 print('ERRORS ');
 print_r($errors);

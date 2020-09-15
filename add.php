@@ -26,7 +26,30 @@ function content($link)
 
 ;
 
-function type_content($type)
+function downloadPhoto()
+{
+    if (!empty($_FILES['file-photo']['name'])) {
+        $file_name = $_FILES['file-photo']['name'];
+        $file_path = __DIR__ . '/uploads/';
+        $file_url = '/uploads/' . $file_name;
+
+        move_uploaded_file($_FILES['file-photo']['tmp_name'], $file_path . $file_name);
+        return $file_name;
+    } else {
+        $url = $_POST['post-photo-link'];
+        $name = basename($url);
+        $file = file_get_contents($url);
+        $ext = pathinfo($url, PATHINFO_EXTENSION);
+
+        file_put_contents(__DIR__ . '/uploads/' . $name . '.' . $ext, $file);
+
+        return $name;
+    }
+}
+
+;
+
+function type_content($type, $func)
 {
     switch ($type) {
         case '1':
@@ -36,7 +59,7 @@ function type_content($type)
             return "INSERT INTO post (title, TEXT, DATE, user_id, content_id, quote_author) VALUES ('{$_POST['post-title']}', '{$_POST['post-quote-text']}', NOW(), '1', '{$_POST['post-type']}', '{$_POST['post-quote-author']}');";
             break;
         case '3':
-            return "INSERT INTO post (title, DATE, user_id, content_id) VALUES ('{$_POST['post-title']}', NOW(), '1', '{$_POST['post-type']}');";
+            return "INSERT INTO post (title, DATE, user_id, content_id, picture) VALUES ('{$_POST['post-title']}', NOW(), '1', '{$_POST['post-type']}', '$func');";
             break;
         case '4':
             return "INSERT INTO post (title, DATE, user_id, content_id, video) VALUES ('{$_POST['post-title']}', NOW(), '1', '{$_POST['post-type']}', '{$_POST['post-video']}');";
@@ -75,21 +98,6 @@ function write_hashtags($str, $link, $last_id)
 ;
 
 
-function download_photo()
-{
-    if ($_FILES['post-photo']) {
-        $file_name = $_FILES['post-photo']['name'];
-        $file_path = __DIR__ . '/uploads/';
-        $file_url = '/uploads/' . $file_name;
-
-        move_uploaded_file($_FILES['post-photo']['tmp_name'], $file_path . $file_name);
-
-        print("<a href='$file_url'>$file_name</a>");
-    }
-}
-
-;
-
 function write($link)
 {
     if (!empty($_POST)) {
@@ -97,9 +105,7 @@ function write($link)
             $error = mysqli_connect_error();
             print($error);
         } else {
-            //print_r($_FILES);
-            //download_photo();
-            $sql = type_content("{$_POST['post-type']}");
+            $sql = type_content("{$_POST['post-type']}", downloadPhoto());
             $result = mysqli_query($link, $sql);
             $last_id = mysqli_insert_id($link);
             write_hashtags($_POST['post-tags'], $link, $last_id);
@@ -113,8 +119,6 @@ function write($link)
 
 ;
 
-
-//Проверяем поля на заполненность и соответствие
 
 $errors = [];
 
@@ -132,13 +136,41 @@ function checkVideo($name)
     if (!filter_var($_POST[$name], FILTER_VALIDATE_URL)) {
         return check_youtube_url($_POST[$name]);
     }
-};
+}
 
-function validateURL($name) {
+;
+
+function validateURL($name)
+{
     if (!filter_var($_POST[$name], FILTER_VALIDATE_URL)) {
         return "Введите корректную ссылку";
     }
-};
+}
+
+;
+
+function checkPhotoLink($name)
+{
+    if (!empty($_POST[$name])) {
+        if (validateURL($name)) {
+            return validateURL($name);
+        } else if (file_get_contents($_POST['post-photo-link']) == 'false' || file_get_contents($_POST['post-photo-link']) == "") {
+            return 'Некорректная ссылка на изображение';
+        } ;
+    }
+
+}
+
+;
+
+function checkFilePhoto($name)
+{
+    if (!($_FILES[$name]['type'] == 'image/png') && !($_FILES[$name]['type'] == 'image/jpeg') && !($_FILES[$name]['type'] == 'image/gif')) {
+        return 'Некорректный формат фото';
+    }
+}
+
+;
 
 
 $rules = [
@@ -167,6 +199,17 @@ $rules = [
         } else {
             return checkVideo('post-video');
         }
+    },
+    'post-photo-link' => function () {
+        if (empty($_FILES['file-photo']['name'])) {
+            return checkPhotoLink('post-photo-link');
+        }
+    },
+    'file-photo' => function () {
+        if (!empty($_FILES['file-photo']['name'])) {
+            return checkFilePhoto('file-photo');
+        }
+
     }
 ];
 
@@ -175,10 +218,19 @@ foreach ($_POST as $key => $value) {
         $rule = $rules[$key];
         $errors[$key] = $rule();
     }
-}
+};
+
+foreach ($_FILES as $key => $value) {
+    if (isset($rules[$key])) {
+        $rule = $rules[$key];
+        $errors[$key] = $rule();
+    }
+};
+
+
+
 
 $errors = array_filter($errors);
-
 
 
 if ($_POST && empty($errors)) {
@@ -190,17 +242,16 @@ if ($_POST && empty($errors)) {
 }
 
 
-
-print('ERRORS ');
-print_r($errors);
-print('<br>');
-print_r(content($link));
-print('<br>');
-print('POST ');
-print_r($_POST);
-print('<br>');
-print('FILES ');
-print_r($_FILES);
+//print('ERRORS ');
+//print_r($errors);
+//print('<br>');
+//print_r(content($link));
+//print('<br>');
+//print('POST ');
+//print_r($_POST);
+//print('<br>');
+//print('FILES ');
+//print_r($_FILES);
 
 
 function getPostVal($name)

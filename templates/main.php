@@ -75,7 +75,7 @@
                         <?php break; ?>
                     <?php case '3': ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?= htmlspecialchars($val['picture']); ?>" alt="Фото от пользователя"
+                            <img src="uploads/<?= htmlspecialchars($val['picture']); ?>" alt="Фото от пользователя"
                                  width="360"
                                  height="240">
                         </div>

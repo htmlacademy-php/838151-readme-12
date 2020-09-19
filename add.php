@@ -7,12 +7,18 @@ $user_name = 'Кирилл';
 
 require_once('helpers.php');
 
-$ind = $_GET['id'] ?? '';
+$post_index = $_GET['id'] ?? '';
 
-$link = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
-mysqli_set_charset($link, "utf8");
+$connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
+mysqli_set_charset($connect, "utf8");
 
-function content($link)
+/**
+ * return type content from db
+ * @param object $link
+ * @return array
+ */
+
+function getContent(object $link): array
 {
     if (!$link) {
         $error = mysqli_connect_error();
@@ -26,30 +32,41 @@ function content($link)
 
 ;
 
-function downloadPhoto()
+/**
+ * download photo and return download file name
+ * @return string
+ */
+
+function downloadPhoto(): string
 {
     if (!empty($_FILES['file-photo']['name'])) {
         $file_name = $_FILES['file-photo']['name'];
         $file_path = __DIR__ . '/uploads/';
-        $file_url = '/uploads/' . $file_name;
 
         move_uploaded_file($_FILES['file-photo']['tmp_name'], $file_path . $file_name);
         return $file_name;
     } else {
         $url = $_POST['post-photo-link'];
-        $name = basename($url);
+        $file_name = basename($url);
         $file = file_get_contents($url);
         $ext = pathinfo($url, PATHINFO_EXTENSION);
 
-        file_put_contents(__DIR__ . '/uploads/' . $name . '.' . $ext, $file);
+        file_put_contents(__DIR__ . '/uploads/' . $file_name . '.' . $ext, $file);
 
-        return $name;
+        return $file_name;
     }
 }
 
 ;
 
-function type_content($type, $func)
+/**
+ * return sql request for content type
+ * @param int $type
+ * @param callable $func
+ * @return string
+ */
+
+function returnSqlRequest(int $type, callable $func): string
 {
     switch ($type) {
         case '1':
@@ -72,8 +89,14 @@ function type_content($type, $func)
 
 ;
 
+/**
+ * write hashtag in db
+ * @param string $str
+ * @param string $link
+ * @param int $last_id
+ */
 
-function write_hashtags($str, $link, $last_id)
+function writeHashtags(string $str, string $link, int $last_id)
 {
     if (!empty($_POST['post-tags'])) {
         $tags_array = array_diff(explode(' ', $str), array(''));
@@ -97,20 +120,22 @@ function write_hashtags($str, $link, $last_id)
 
 ;
 
+/**
+ * @param string $link
+ */
 
-function write($link)
+function write(string $link)
 {
     if (!empty($_POST)) {
         if (!$link) {
             $error = mysqli_connect_error();
             print($error);
         } else {
-            $sql = type_content("{$_POST['post-type']}", downloadPhoto());
+            $sql = returnSqlRequest("{$_POST['post-type']}", downloadPhoto());
             $result = mysqli_query($link, $sql);
             $last_id = mysqli_insert_id($link);
-            write_hashtags($_POST['post-tags'], $link, $last_id);
+            writeHashtags($_POST['post-tags'], $link, $last_id);
             if (!$result) {
-
                 print(mysqli_error($link));
             };
         };
@@ -122,16 +147,27 @@ function write($link)
 
 $errors = [];
 
-function validateFilled($name)
+/**
+ * check input for fullness
+ * @param string $name
+ * @return string|null
+ */
+
+function validateFilled(string $name)
 {
     if (empty($_POST[$name])) {
-        return "Это поле должно быть заполнено";
-    }
+        return 'Это поле должно быть заполнено';
+    };
 }
 
 ;
 
-function checkVideo($name)
+/**
+ * check video from youtube
+ * @param string $name
+ * @return string
+ */
+function checkVideo(string $name): string
 {
     if (!filter_var($_POST[$name], FILTER_VALIDATE_URL)) {
         return check_youtube_url($_POST[$name]);
@@ -140,7 +176,12 @@ function checkVideo($name)
 
 ;
 
-function validateURL($name)
+/**
+ * check link
+ * @param string $name
+ * @return string
+ */
+function validateURL(string $name): string
 {
     if (!filter_var($_POST[$name], FILTER_VALIDATE_URL)) {
         return "Введите корректную ссылку";
@@ -149,21 +190,31 @@ function validateURL($name)
 
 ;
 
-function checkPhotoLink($name)
+/**
+ * check photo link
+ * @param string $name
+ * @return string
+ */
+function checkPhotoLink(string $name): string
 {
     if (!empty($_POST[$name])) {
         if (validateURL($name)) {
             return validateURL($name);
         } else if (file_get_contents($_POST['post-photo-link']) == 'false' || file_get_contents($_POST['post-photo-link']) == "") {
             return 'Некорректная ссылка на изображение';
-        } ;
+        };
     }
 
 }
 
 ;
 
-function checkFilePhoto($name)
+/**
+ * check download file photo
+ * @param string $name
+ * @return string
+ */
+function checkFilePhoto(string $name): string
 {
     if (!($_FILES[$name]['type'] == 'image/png') && !($_FILES[$name]['type'] == 'image/jpeg') && !($_FILES[$name]['type'] == 'image/gif')) {
         return 'Некорректный формат фото';
@@ -227,15 +278,12 @@ foreach ($_FILES as $key => $value) {
     }
 };
 
-
-
-
 $errors = array_filter($errors);
 
 
 if ($_POST && empty($errors)) {
-    write($link);
-    $new_post_id = mysqli_insert_id($link);
+    write($connect);
+    $new_post_id = mysqli_insert_id($connect);
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: /post.php?id=$new_post_id");
     }
@@ -253,22 +301,25 @@ if ($_POST && empty($errors)) {
 //print('FILES ');
 //print_r($_FILES);
 
-
-function getPostVal($name)
+/**
+ * @param string $name
+ * @return string
+ */
+function getPostVal(string $name): string
 {
     return $_POST[$name] ?? "";
 }
 
 ;
 
-$post_title = include_template('/add_post_title.php', ['getPostVal' => getPostVal, 'errors' => $errors]);
-$post_tags = include_template('/add_post_tags.php', ['getPostVal' => getPostVal, 'errors' => $errors]);
-$post_text = include_template('/add_post_text.php', ['getPostVal' => getPostVal, 'errors' => $errors]);
-$post_quote = include_template('/add_post_quote.php', ['getPostVal' => getPostVal, 'errors' => $errors]);
-$post_author = include_template('/add_post_author.php', ['getPostVal' => getPostVal, 'errors' => $errors]);
+$post_title = include_template('/add_post_title.php', ['errors' => $errors]);
+$post_tags = include_template('/add_post_tags.php', ['errors' => $errors]);
+$post_text = include_template('/add_post_text.php', ['errors' => $errors]);
+$post_quote = include_template('/add_post_quote.php', ['errors' => $errors]);
+$post_author = include_template('/add_post_author.php', ['errors' => $errors]);
 
 
-$page_content = include_template('/add_main.php', ['type_cont' => content($link), 'errors' => $errors, 'getPostVal' => getPostVal, 'post_title' => $post_title, 'post_tags' => $post_tags, 'post_text' => $post_text, 'post_quote' => $post_quote, 'post_author' => $post_author]);
+$page_content = include_template('/add_main.php', ['type_cont' => getContent($connect), 'errors' => $errors, 'post_title' => $post_title, 'post_tags' => $post_tags, 'post_text' => $post_text, 'post_quote' => $post_quote, 'post_author' => $post_author]);
 
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
 

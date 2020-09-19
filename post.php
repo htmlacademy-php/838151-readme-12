@@ -8,10 +8,16 @@ require_once('helpers.php');
 
 $ind = $_GET['id'] ?? '';
 
-$link = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
-mysqli_set_charset($link, "utf8");
+$connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
+mysqli_set_charset($connect, "utf8");
 
-function post($link, $id)
+/**
+ * return post from db
+ * @param object $link
+ * @param string $id
+ * @return array
+ */
+function getPost(object $link, string $id): array
 {
     if (!$link) {
         return [];
@@ -30,14 +36,14 @@ function post($link, $id)
 
 ;
 
-$post_text = include_template('/post_text.php', ['post' => post($link, $ind)]);
-$post_link = include_template('/post_link.php', ['post' => post($link, $ind)]);
-$post_photo = include_template('/post_photo.php', ['post' => post($link, $ind)]);
-$post_video = include_template('/post_video.php', ['post' => post($link, $ind)]);
-$post_quote = include_template('/post_quote.php', ['post' => post($link, $ind)]);
+$post_text = include_template('/post_text.php', ['post' => getPost($connect, $ind)]);
+$post_link = include_template('/post_link.php', ['post' => getPost($connect, $ind)]);
+$post_photo = include_template('/post_photo.php', ['post' => getPost($connect, $ind)]);
+$post_video = include_template('/post_video.php', ['post' => getPost($connect, $ind)]);
+$post_quote = include_template('/post_quote.php', ['post' => getPost($connect, $ind)]);
 
 
-$page_content = include_template('/post_main.php',  ['post' => post($link, $ind), 'post_text' => $post_text, 'post_video' => $post_video, 'post_photo' => $post_photo, 'post_quote' => $post_quote, 'post_link' => $post_link]);
+$page_content = include_template('/post_main.php',  ['post' => getPost($connect, $ind), 'post_text' => $post_text, 'post_video' => $post_video, 'post_photo' => $post_photo, 'post_quote' => $post_quote, 'post_link' => $post_link]);
 
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
 

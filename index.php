@@ -2,8 +2,12 @@
 $is_auth = rand(0, 1);
 
 $user_name = 'Кирилл'; // укажите здесь ваше имя
-
-function cut_text($text, $len = 300)
+/**
+ * cut post text
+ * @param string $text
+ * @param int $len
+ */
+function cutText(string $text, int $len = 300)
 {
     if (strlen($text) < $len) {
         echo '<p>' . $text . '</p>';
@@ -22,12 +26,18 @@ function cut_text($text, $len = 300)
 
 ;
 
-$link = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
-mysqli_set_charset($link, "utf8");
+$connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
+mysqli_set_charset($connect, "utf8");
 
 $ind = $_GET['id'] ?? '';
+print_r($ind);
 
-function content($link)
+/**
+ * return content type from db
+ * @param object $link
+ * @return array
+ */
+function getContent(object $link)
 {
     if (!$link) {
         $error = mysqli_connect_error();
@@ -41,17 +51,22 @@ function content($link)
 
 ;
 
-
-function posts($link, $id)
+/**
+ * return posts from db
+ * @param object $link
+ * @param string $id
+ * @return array
+ */
+function getPosts(object $link, string $id): array
 {
     if (!$link) {
         $error = mysqli_connect_error();
         print($error);
     } else {
         if ($id) {
-            $sql = "SELECT post.title, post.id as post_id, text, author, picture, video, link, content_id, avatar, class_name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE content.id = $id ORDER BY post.count_view DESC ";
+            $sql = "SELECT post.title, post.id as post_id, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE content.id = $id ORDER BY post.count_view DESC ";
         } else {
-            $sql = "SELECT post.title, post.id as post_id, text, author, picture, video, link, content_id, avatar, class_name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
+            $sql = "SELECT post.title, post.id as post_id, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
         }
         $result = mysqli_query($link, $sql);
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -64,7 +79,7 @@ function posts($link, $id)
 require_once('helpers.php');
 
 
-$page_content = include_template('/main.php', ['posts' => posts($link, $ind), 'type_cont' => content($link), 'ind' => $ind]);
+$page_content = include_template('/main.php', ['posts' => getPosts($connect, $ind), 'type_cont' => getContent($connect), 'ind' => $ind]);
 
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
 
@@ -72,7 +87,10 @@ print($layout_content);
 
 date_default_timezone_set('Europe/Moscow');
 
-function check_time($some_date)
+/**
+ * @param $some_date
+ */
+function checkTime($some_date)
 {
     $current_date = date_create("now");
     $publication_date = date_create($some_date);

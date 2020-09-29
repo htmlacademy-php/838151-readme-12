@@ -36,7 +36,7 @@
             <b class="popular__filters-caption filters__caption">Тип контента:</b>
            <ul class="popular__filters-list filters__list" >
                 <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                    <a class="filters__button filters__button--ellipse filters__button--all <?php if(!$ind) {print('filters__button--active');}?>"
+                    <a class="filters__button filters__button--ellipse filters__button--all <?php if(!$post_index) {print('filters__button--active');}?>"
                        href="index.php">
                         <span>Все</span>
                     </a>
@@ -44,7 +44,7 @@
 
                 <?php foreach ($type_cont as $key => $val): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?= $val['class_name']; if($ind == $val['id']) {print(' filters__button--active'); }?> button" href="<?php print("index.php?" . "id=" . $val['id'])?>">
+                        <a class="filters__button filters__button--<?= $val['class_name']; if($post_index == $val['id']) {print(' filters__button--active'); }?> button" href="<?php print("index.php?" . "id=" . $val['id'])?>">
                             <span class="visually-hidden"><?= $val['title'] ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?= $val['class_name'] ?>"></use>
@@ -67,15 +67,15 @@
                             <p>
                                 <?= htmlspecialchars($val['text']); ?>
                             </p>
-                            <cite><?= htmlspecialchars($val['author']); ?></cite>
+                            <cite><?= htmlspecialchars($val['quote-author']); ?></cite>
                         </blockquote>
                         <?php break; ?>
                     <?php case '1': ?>
-                        <?php cut_text(htmlspecialchars($val['text'])); ?>
+                        <?php cutText(htmlspecialchars($val['text'])); ?>
                         <?php break; ?>
                     <?php case '3': ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?= htmlspecialchars($val['picture']); ?>" alt="Фото от пользователя"
+                            <img src="uploads/<?= htmlspecialchars($val['picture']); ?>" alt="Фото от пользователя"
                                  width="360"
                                  height="240">
                         </div>
@@ -99,8 +99,8 @@
                     <?php case '4': ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
-                                <?= embed_youtube_cover(/* вставьте ссылку на видео */); ?>
-                                <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">
+                                <?= embed_youtube_cover($val['video'] ); ?>
+<!--                                <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">-->
                             </div>
                             <a href="post-details.html" class="post-video__play-big button">
                                 <svg class="post-video__play-big-icon" width="14" height="14">
@@ -121,9 +121,9 @@
                                      alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?= $val['author'] ?></b>
+                                <b class="post__author-name"><?= $val['name'] ?></b>
                                 <time class="post__time"
-                                      datetime="<?php print(generate_random_date($key)); ?>"><?php check_time(generate_random_date($key)); ?></time>
+                                      datetime="<?php print(generate_random_date($key)); ?>"><?php checkTime(generate_random_date($key)); ?></time>
                             </div>
                         </a>
                     </div>

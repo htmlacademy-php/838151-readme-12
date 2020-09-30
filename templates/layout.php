@@ -108,6 +108,7 @@
                 micro blogging
             </p>
         </div>
+        <?php if ($is_auth): ?>
         <form class="header__search-form form" action="#" method="get">
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
@@ -120,10 +121,12 @@
                 </button>
             </div>
         </form>
+        <?php endif; ?>
         <div class="header__nav-wrapper">
             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
-            <?php if ($is_auth): ?>
+
                 <nav class="header__nav">
+                    <?php if ($is_auth): ?>
                     <ul class="header__my-nav">
                         <li class="header__my-page header__my-page--popular">
                             <a class="header__page-link header__page-link--active" title="Популярный контент">
@@ -193,8 +196,18 @@
                             <a class="header__post-button button button--transparent" href="add.php">Пост</a>
                         </li>
                     </ul>
+                    <?php else: ?>
+                    <ul class="header__user-nav">
+                        <li class="header__authorization">
+                            <a class="header__user-button header__authorization-button button <?php if($_SERVER['REQUEST_URI'] == '/login.php') {print('header__user-button--active');}?>" href="login.html">Вход</a>
+                        </li>
+                        <li>
+                            <a class="header__user-button <?php if($_SERVER['REQUEST_URI'] == '/registration.php') {print('header__user-button--active');}?> header__register-button button" href="registration.php">Регистрация</a>
+                        </li>
+                    </ul>
+                    <?php endif; ?>
                 </nav>
-            <?php endif; ?>
+
         </div>
     </div>
 </header>

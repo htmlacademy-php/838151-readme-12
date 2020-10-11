@@ -121,10 +121,10 @@ function writeHashtags(string $str, string $link, int $last_id)
 ;
 
 /**
- * @param string $link
+ * @param object $link
  */
 
-function write(string $link)
+function write(object $link)
 {
     if (!empty($_POST)) {
         if (!$link) {

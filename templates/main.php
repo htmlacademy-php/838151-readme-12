@@ -37,14 +37,14 @@
            <ul class="popular__filters-list filters__list" >
                 <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
                     <a class="filters__button filters__button--ellipse filters__button--all <?php if(!$post_index) {print('filters__button--active');}?>"
-                       href="index.php">
+                       href="popular.php">
                         <span>Все</span>
                     </a>
                 </li>
 
                 <?php foreach ($type_cont as $key => $val): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?= $val['class_name']; if($post_index == $val['id']) {print(' filters__button--active'); }?> button" href="<?php print("index.php?" . "id=" . $val['id'])?>">
+                        <a class="filters__button filters__button--<?= $val['class_name']?> <?php if($post_index == $val['id']) {print(' filters__button--active');}?> button" href="<?php print("popular.php?" . "id=" . $val['id'])?>">
                             <span class="visually-hidden"><?= $val['title'] ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?= $val['class_name'] ?>"></use>

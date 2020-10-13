@@ -1,10 +1,7 @@
 <?php
 
 
-$is_auth = rand(0, 1);
-
-$user_name = 'Кирилл';
-
+session_start();
 require_once('helpers.php');
 
 $post_index = $_GET['id'] ?? '';
@@ -20,14 +17,8 @@ mysqli_set_charset($connect, "utf8");
 
 function getContent(object $link): array
 {
-    if (!$link) {
-        $error = mysqli_connect_error();
-        print($error);
-    } else {
-        $sql = 'SELECT id, title, class_name FROM content';
-        $result = mysqli_query($link, $sql);
-        return mysqli_fetch_all($result, MYSQLI_ASSOC);
-    };
+    $sql = 'SELECT id, title, class_name FROM content';
+    requestDb($sql);
 }
 
 ;
@@ -37,24 +28,27 @@ function getContent(object $link): array
  * @return string
  */
 
-function downloadPhoto(): string
+function downloadPhoto()
 {
-    if (!empty($_FILES['file-photo']['name'])) {
-        $file_name = $_FILES['file-photo']['name'];
-        $file_path = __DIR__ . '/uploads/';
+    if (!empty($_FILES['file-photo']['name']) || !empty($_POST['post-photo-link'])) {
+        if (!empty($_FILES['file-photo']['name'])) {
+            $file_name = $_FILES['file-photo']['name'];
+            $file_path = __DIR__ . '/uploads/';
 
-        move_uploaded_file($_FILES['file-photo']['tmp_name'], $file_path . $file_name);
-        return $file_name;
-    } else {
-        $url = $_POST['post-photo-link'];
-        $file_name = basename($url);
-        $file = file_get_contents($url);
-        $ext = pathinfo($url, PATHINFO_EXTENSION);
+            move_uploaded_file($_FILES['file-photo']['tmp_name'], $file_path . $file_name);
+            return $file_name;
+        } else {
+            $url = $_POST['post-photo-link'];
+            $file_name = basename($url);
+            $file = file_get_contents($url);
+            $ext = pathinfo($url, PATHINFO_EXTENSION);
 
-        file_put_contents(__DIR__ . '/uploads/' . $file_name . '.' . $ext, $file);
+            file_put_contents(__DIR__ . '/uploads/' . $file_name . '.' . $ext, $file);
 
-        return $file_name;
+            return $file_name;
+        }
     }
+
 }
 
 ;
@@ -62,12 +56,12 @@ function downloadPhoto(): string
 /**
  * return sql request for content type
  * @param int $type
- * @param callable $func
  * @return string
  */
 
-function returnSqlRequest(int $type, callable $func): string
+function returnSqlRequest(int $type, $func): string
 {
+
     switch ($type) {
         case '1':
             return "INSERT INTO post (title, TEXT, DATE, user_id, content_id) VALUES ('{$_POST['post-title']}', '{$_POST['post-text']}', NOW(), '1', '{$_POST['post-type']}');";
@@ -91,12 +85,11 @@ function returnSqlRequest(int $type, callable $func): string
 
 /**
  * write hashtag in db
- * @param string $str
- * @param string $link
+ * @param object $link
  * @param int $last_id
  */
 
-function writeHashtags(string $str, string $link, int $last_id)
+function writeHashtags($str, object $link, int $last_id)
 {
     if (!empty($_POST['post-tags'])) {
         $tags_array = array_diff(explode(' ', $str), array(''));
@@ -181,7 +174,7 @@ function checkVideo(string $name): string
  * @param string $name
  * @return string
  */
-function validateURL(string $name): string
+function validateURL(string $name)
 {
     if (!filter_var($_POST[$name], FILTER_VALIDATE_URL)) {
         return "Введите корректную ссылку";
@@ -212,9 +205,8 @@ function checkPhotoLink(string $name): string
 /**
  * check download file photo
  * @param string $name
- * @return string
  */
-function checkFilePhoto(string $name): string
+function checkFilePhoto(string $name)
 {
     if (!($_FILES[$name]['type'] == 'image/png') && !($_FILES[$name]['type'] == 'image/jpeg') && !($_FILES[$name]['type'] == 'image/gif')) {
         return 'Некорректный формат фото';
@@ -289,17 +281,6 @@ if ($_POST && empty($errors)) {
     }
 }
 
-
-//print('ERRORS ');
-//print_r($errors);
-//print('<br>');
-//print_r(content($link));
-//print('<br>');
-//print('POST ');
-//print_r($_POST);
-//print('<br>');
-//print('FILES ');
-//print_r($_FILES);
 
 /**
  * @param string $name

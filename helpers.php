@@ -258,4 +258,75 @@ function generate_random_date($index)
     $dt = date('Y-m-d H:i:s', $ts);
 
     return $dt;
+};
+
+function requestDb($sql)
+{
+    $connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
+    if (!$connect) {
+        return [];
+    } else {
+        $result = mysqli_query($connect, $sql);
+        if (!$result) {
+            return [];
+        } else {
+            return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        }
+    }
+
 }
+
+;
+
+/**
+ * @param $some_date
+ */
+function checkTime($some_date)
+{
+    $current_date = date_create("now");
+    $publication_date = date_create($some_date);
+    $diff = date_diff($current_date, $publication_date);
+
+    switch ($diff) {
+        case $diff->m > 0:
+            print($diff->m . ' ' . get_noun_plural_form($diff->m, 'месяц', 'месяца', 'месяцев') . ' назад');
+            break;
+        case $diff->d >= 7 && $diff->d <= 35:
+            $week = floor(($diff->d) / 7);
+            print($week . ' ' . get_noun_plural_form($week, 'неделю', 'недели', 'недель') . ' назад');
+            break;
+        case $diff->d > 0:
+            print($diff->d . ' ' . get_noun_plural_form($diff->m, 'день', 'дня', 'дней') . ' назад');
+            break;
+        case $diff->h > 0:
+            print($diff->h . ' ' . get_noun_plural_form($diff->m, 'час', 'часа', 'часов') . ' назад');
+            break;
+        case $diff->i > 0:
+            print($diff->i . ' ' . get_noun_plural_form($diff->m, 'минуту', 'минуты', 'минут') . ' назад');
+            break;
+
+
+    };
+
+}
+
+;
+
+/**
+ * return posts from db
+ * @param string $id
+ * @return array
+ */
+function getPosts(string $id): array
+{
+    $sql="";
+    if($id) {
+        $sql = "SELECT post.title, post.id as post_id, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE content.id = $id ORDER BY post.count_view DESC ";
+    } else {
+        $sql = "SELECT post.title, post.id as post_id, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
+    };
+
+    return requestDb($sql);
+}
+
+;

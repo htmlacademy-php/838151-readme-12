@@ -101,45 +101,52 @@
 <header class="header">
     <div class="header__wrapper container">
         <div class="header__logo-wrapper">
-            <a class="header__logo-link" href="main.html">
+            <a class="header__logo-link" href="/">
                 <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
             </a>
             <p class="header__topic">
                 micro blogging
             </p>
         </div>
-        <?php if ($is_auth): ?>
-        <form class="header__search-form form" action="#" method="get">
-            <div class="header__search">
-                <label class="visually-hidden">Поиск</label>
-                <input class="header__search-input form__input" type="search">
-                <button class="header__search-button button" type="submit">
-                    <svg class="header__search-icon" width="18" height="18">
-                        <use xlink:href="#icon-search"></use>
-                    </svg>
-                    <span class="visually-hidden">Начать поиск</span>
-                </button>
-            </div>
-        </form>
+        <?php if (isset($_SESSION)): ?>
+            <form class="header__search-form form" action="#" method="get">
+                <div class="header__search">
+                    <label class="visually-hidden">Поиск</label>
+                    <input class="header__search-input form__input" type="search">
+                    <button class="header__search-button button" type="submit">
+                        <svg class="header__search-icon" width="18" height="18">
+                            <use xlink:href="#icon-search"></use>
+                        </svg>
+                        <span class="visually-hidden">Начать поиск</span>
+                    </button>
+                </div>
+            </form>
         <?php endif; ?>
         <div class="header__nav-wrapper">
             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
 
-                <nav class="header__nav">
-                    <?php if ($is_auth): ?>
+            <nav class="header__nav">
+                <?php if (isset($_SESSION)): ?>
                     <ul class="header__my-nav">
                         <li class="header__my-page header__my-page--popular">
-                            <a class="header__page-link header__page-link--active" title="Популярный контент">
+                            <a class="header__page-link  <?php if ($_SERVER['REQUEST_URI'] == '/popular.php') {
+                                print('header__page-link--active');
+                            } ?>" href="/popular.php"
+                               title="Популярный контент">
                                 <span class="visually-hidden">Популярный контент</span>
                             </a>
                         </li>
                         <li class="header__my-page header__my-page--feed">
-                            <a class="header__page-link" href="feed.html" title="Моя лента">
+                            <a class="header__page-link <?php if ($_SERVER['REQUEST_URI'] == '/feed.php') {
+                                print('header__page-link--active');
+                            } ?>" href="/feed.php" title="Моя лента">
                                 <span class="visually-hidden">Моя лента</span>
                             </a>
                         </li>
                         <li class="header__my-page header__my-page--messages">
-                            <a class="header__page-link" href="messages.html" title="Личные сообщения">
+                            <a class="header__page-link <?php if ($_SERVER['REQUEST_URI'] == '/messages.php') {
+                                print('header__page-link--active');
+                            } ?>" href="messages.php" title="Личные сообщения">
                                 <span class="visually-hidden">Личные сообщения</span>
                             </a>
                         </li>
@@ -149,12 +156,13 @@
                         <li class="header__profile">
                             <a class="header__profile-link" href="#">
                                 <div class="header__avatar-wrapper">
-                                    <img class="header__profile-avatar" src="img/userpic-medium.jpg"
+                                    <img class="header__profile-avatar"
+                                         src="uploads/<?php (print(requestDb("SELECT avatar FROM users WHERE id = '{$_SESSION['id']}'"))[0]['avatar']); ?>"
                                          alt="Аватар профиля">
                                 </div>
                                 <div class="header__profile-name">
                                 <span>
-                                    <?php print($user_name); ?>
+                                    <?php (print(requestDb("SELECT name FROM users WHERE id = '{$_SESSION['id']}'"))[0]['name']); ?>
                                     <!--здесь должно быть имя пользователя-->
                                 </span>
                                     <svg class="header__link-arrow" width="10" height="6">
@@ -182,7 +190,7 @@
                                         </li>
 
                                         <li class="header__profile-nav-item">
-                                            <a class="header__profile-nav-link" href="#">
+                                            <a class="header__profile-nav-link" href="/logout.php">
                           <span class="header__profile-nav-text">
                             Выход
                           </span>
@@ -193,20 +201,24 @@
                             </div>
                         </li>
                         <li>
-                            <a class="header__post-button button button--transparent" href="add.php">Пост</a>
+                            <a class="header__post-button button button--transparent" href="/add.php">Пост</a>
                         </li>
                     </ul>
-                    <?php else: ?>
+                <?php else: ?>
                     <ul class="header__user-nav">
                         <li class="header__authorization">
-                            <a class="header__user-button header__authorization-button button <?php if($_SERVER['REQUEST_URI'] == '/login.php') {print('header__user-button--active');}?>" href="login.html">Вход</a>
+                            <a class="header__user-button header__authorization-button button <?php if ($_SERVER['REQUEST_URI'] == '/login.php') {
+                                print('header__user-button--active');
+                            } ?>" href="login.php">Вход</a>
                         </li>
                         <li>
-                            <a class="header__user-button <?php if($_SERVER['REQUEST_URI'] == '/registration.php') {print('header__user-button--active');}?> header__register-button button" href="registration.php">Регистрация</a>
+                            <a class="header__user-button <?php if ($_SERVER['REQUEST_URI'] == '/registration.php') {
+                                print('header__user-button--active');
+                            } ?> header__register-button button" href="registration.php">Регистрация</a>
                         </li>
                     </ul>
-                    <?php endif; ?>
-                </nav>
+                <?php endif; ?>
+            </nav>
 
         </div>
     </div>
@@ -251,17 +263,17 @@
             <div class="footer__my-info">
                 <ul class="footer__my-pages">
                     <li class="footer__my-page footer__my-page--feed">
-                        <a class="footer__page-link" href="feed.html">Моя лента</a>
+                        <a class="footer__page-link" href="feed.php">Моя лента</a>
                     </li>
                     <li class="footer__my-page footer__my-page--popular">
-                        <a class="footer__page-link" href="popular.html">Популярный контент</a>
+                        <a class="footer__page-link" href="popular.php">Популярный контент</a>
                     </li>
                     <li class="footer__my-page footer__my-page--messages">
-                        <a class="footer__page-link" href="messages.html">Личные сообщения</a>
+                        <a class="footer__page-link" href="messages.php">Личные сообщения</a>
                     </li>
                 </ul>
                 <div class="footer__copyright">
-                    <a class="footer__copyright-link" href="#">
+                    <a class="footer__copyright-link" href="htmlacademy.ru">
                         <span>Разработано HTML Academy</span>
                         <svg class="footer__copyright-logo" width="27" height="34">
                             <use xlink:href="#icon-htmlacademy"></use>

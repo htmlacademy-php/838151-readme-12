@@ -26,40 +26,19 @@ function getContent(object $link)
 
 ;
 
-/**
- * @return string
- */
-function getSubscribedUser()
-{
-    $sql = "SELECT subscribed_user1 FROM subscription WHERE subscribed_user = '{$_SESSION['id']}'";
-    $red = requestDb($sql);
-    $text = " ";
-    foreach ($red as $key => $value) {
-        if ($key + 1 != count($red)) {
-            $text = $text . 'user_id = ' . $red[$key]['subscribed_user1'] . ' OR ';
-        } else {
-            $text = $text . 'user_id = ' . $red[$key]['subscribed_user1'] . ' ';
-        }
-
-    }
-    return $text;
-}
-
-;
 
 /**
- * @param $func
  * @param $id
  * @return array
  */
 
-function getPost($func, $id): array
+function getPost($id): array
 {
     $sql = "";
     if ($id) {
-        $sql = "SELECT post.title, DATE, user_id, text, likes, name, picture, video, link, content_id, avatar, class_name, count_view FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = $id WHERE $func  ORDER BY post.date DESC";
+        $sql = "SELECT post.title, DATE, user_id, text, likes, name, picture, video, link, content_id, avatar, class_name, count_view FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = $id WHERE user_id IN (SELECT subscribed_user1 FROM subscription WHERE subscribed_user = '{$_SESSION['id']}')  ORDER BY post.date DESC";
     } else {
-        $sql = "SELECT post.title, DATE, user_id, text, likes, name, picture, video, link, content_id, avatar, class_name, count_view FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE $func  ORDER BY post.date DESC";
+        $sql = "SELECT post.title, DATE, user_id, text, likes, name, picture, video, link, content_id, avatar, class_name, count_view FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE user_id IN (SELECT subscribed_user1 FROM subscription WHERE subscribed_user = '{$_SESSION['id']}')  ORDER BY post.date DESC";
     };
     return requestDb($sql);
 }
@@ -69,7 +48,7 @@ function getPost($func, $id): array
 date_default_timezone_set('Europe/Moscow');
 
 
-$page_content = include_template('/feed_main.php', ['posts' => getPost(getSubscribedUser(), $ind), 'post_index' => $ind, 'type_cont' => getContent($connect)]);
+$page_content = include_template('/feed_main.php', ['posts' => getPost($ind), 'post_index' => $ind, 'type_cont' => getContent($connect)]);
 
 $layout_content = include_template('/layout.php', ['content' => $page_content]);
 

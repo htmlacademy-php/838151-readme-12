@@ -34,9 +34,11 @@
         </div>
         <div class="popular__filters filters">
             <b class="popular__filters-caption filters__caption">Тип контента:</b>
-           <ul class="popular__filters-list filters__list" >
+            <ul class="popular__filters-list filters__list">
                 <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                    <a class="filters__button filters__button--ellipse filters__button--all <?php if(!$post_index) {print('filters__button--active');}?>"
+                    <a class="filters__button filters__button--ellipse filters__button--all <?php if (!$post_index) {
+                        print('filters__button--active');
+                    } ?>"
                        href="popular.php">
                         <span>Все</span>
                     </a>
@@ -44,7 +46,9 @@
 
                 <?php foreach ($type_cont as $key => $val): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?= $val['class_name']?> <?php if($post_index == $val['id']) {print(' filters__button--active');}?> button" href="<?php print("popular.php?" . "id=" . $val['id'])?>">
+                        <a class="filters__button filters__button--<?= $val['class_name'] ?> <?php if ($post_index == $val['id']) {
+                            print(' filters__button--active');
+                        } ?> button" href="<?php print("popular.php?" . "id=" . $val['id']) ?>">
                             <span class="visually-hidden"><?= $val['title'] ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?= $val['class_name'] ?>"></use>
@@ -57,9 +61,11 @@
     </div>
     <div class="popular__posts">
         <?php foreach ($posts as $key => $val): ?>
-            <article class="popular__post post post-<?= $val['class_name']?>">
+            <article class="popular__post post post-<?= $val['class_name'] ?>">
                 <header class="post__header">
-                    <h2><a href="<?php print('post.php?id=' . $val['post_id']);?>"><?= htmlspecialchars($val['title']); ?></a></h2>
+                    <h2>
+                        <a href="<?php print('post.php?id=' . $val['post_id']); ?>"><?= htmlspecialchars($val['title']); ?></a>
+                    </h2>
                 </header>
                 <div class="post__main">
                     <?php switch ($val['content_id']): ?><?php case '2': ?>
@@ -99,8 +105,8 @@
                     <?php case '4': ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
-                                <?= embed_youtube_cover($val['video'] ); ?>
-<!--                                <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">-->
+                                <?= embed_youtube_cover($val['video']); ?>
+                                <!--                                <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">-->
                             </div>
                             <a href="post-details.html" class="post-video__play-big button">
                                 <svg class="post-video__play-big-icon" width="14" height="14">

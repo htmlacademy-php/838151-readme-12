@@ -61,9 +61,10 @@
                                         <?= $post_author; ?>
                                         <?php break; ?>
                                     <?php case 'photo': ?>
-                                        <div class="adding-post__input-wrapper form__input-wrapper <?php if (!empty($errors['post-photo-link'])) {
-                                            print(' form__input-section--error');
-                                        } ?>">
+                                        <div
+                                            class="adding-post__input-wrapper form__input-wrapper <?php if (!empty($errors['post-photo-link'])) {
+                                                print(' form__input-section--error');
+                                            } ?>">
                                             <label class="adding-post__label form__label" for="photo-url">Ссылка из
                                                 интернета</label>
                                             <div class="form__input-section">
@@ -148,7 +149,7 @@
                                                 <?php case 'post-video': ?>
                                                     Ссылка YOUTUBE.
                                                     <?php break; ?>
-                                                    <?php case 'post-photo-link': ?>
+                                                <?php case 'post-photo-link': ?>
                                                     Ссылка из интернета.
                                                     <?php break; ?>
                                                 <?php endswitch; ?>

@@ -6,7 +6,9 @@
         <h2 class="visually-hidden">Лента</h2>
         <div class="feed__main-wrapper">
             <div class="feed__wrapper">
-                <?php foreach ($posts as $key => $val): ?>
+                <?php foreach ($posts
+
+                as $key => $val): ?>
                 <?php switch ($val['content_id']): ?><?php case 1: ?>
                 <article class="feed__post post post-text">
                     <? break; ?>
@@ -31,7 +33,7 @@
                                             </div>
                                             <div class="post__info">
                                                 <b class="post__author-name"><?= $val['name'] ?></b>
-                                                <span class="post__time"><?= checkTime($val['DATE']);?></span>
+                                                <span class="post__time"><?= checkTime($val['DATE']); ?></span>
                                             </div>
                                         </a>
                                     </header>
@@ -39,7 +41,7 @@
                                         <div class="post__main">
                                             <h2><a href="#">Полезный пост про Байкал</a></h2>
                                             <p>
-                                                <?= $val['text']?>
+                                                <?= $val['text'] ?>
                                             </p>
                                             <a class="post-text__more-link" href="#">Читать далее</a>
                                         </div>
@@ -48,17 +50,18 @@
                                         <div class="post__main">
                                             <blockquote>
                                                 <p>
-                                                    <?= $val['text']?>
+                                                    <?= $val['text'] ?>
                                                 </p>
-                                                <cite><?= $val['author']?></cite>
+                                                <cite><?= $val['author'] ?></cite>
                                             </blockquote>
                                         </div>
                                         <? break; ?>
                                     <?php case 3: ?>
                                         <div class="post__main">
-                                            <h2><a href="#"><?= $val['text']?></a></h2>
+                                            <h2><a href="#"><?= $val['text'] ?></a></h2>
                                             <div class="post-photo__image-wrapper">
-                                                <img src="uploads/<?= $val['photo']?>" alt="Фото от пользователя" width="760"
+                                                <img src="uploads/<?= $val['photo'] ?>" alt="Фото от пользователя"
+                                                     width="760"
                                                      height="396">
                                             </div>
                                         </div>
@@ -480,13 +483,17 @@
         </div>
         <ul class="feed__filters filters">
             <li class="feed__filters-item filters__item">
-                <a class="filters__button  <?php if(!$post_index) {print('filters__button--active');}?>" href="<?php print("feed.php")?>">
+                <a class="filters__button  <?php if (!$post_index) {
+                    print('filters__button--active');
+                } ?>" href="<?php print("feed.php") ?>">
                     <span>Все</span>
                 </a>
             </li>
             <?php foreach ($type_cont as $key => $val): ?>
                 <li class="feed__filters-item filters__item">
-                    <a class="filters__button filters__button--<?= $val['class_name']?> <?php if($post_index == $val['id']) {print(' filters__button--active');}?> button" href="<?php print("feed.php?" . "id=" . $val['id'])?>">
+                    <a class="filters__button filters__button--<?= $val['class_name'] ?> <?php if ($post_index == $val['id']) {
+                        print(' filters__button--active');
+                    } ?> button" href="<?php print("feed.php?" . "id=" . $val['id']) ?>">
                         <span class="visually-hidden"><?= $val['title'] ?></span>
                         <svg class="filters__icon" width="22" height="18">
                             <use xlink:href="#icon-filter-<?= $val['class_name'] ?>"></use>
@@ -494,7 +501,7 @@
                     </a>
                 </li>
             <?php endforeach; ?>
-            
+
         </ul>
     </section>
     <aside class="promo">

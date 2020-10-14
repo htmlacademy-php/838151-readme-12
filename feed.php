@@ -26,7 +26,9 @@ function getContent(object $link)
 
 ;
 
-
+/**
+ * @return string
+ */
 function getSubscribedUser()
 {
     $sql = "SELECT subscribed_user1 FROM subscription WHERE subscribed_user = '{$_SESSION['id']}'";
@@ -45,10 +47,16 @@ function getSubscribedUser()
 
 ;
 
+/**
+ * @param $func
+ * @param $id
+ * @return array
+ */
+
 function getPost($func, $id): array
 {
-    $sql="";
-    if($id) {
+    $sql = "";
+    if ($id) {
         $sql = "SELECT post.title, DATE, user_id, text, likes, name, picture, video, link, content_id, avatar, class_name, count_view FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = $id WHERE $func  ORDER BY post.date DESC";
     } else {
         $sql = "SELECT post.title, DATE, user_id, text, likes, name, picture, video, link, content_id, avatar, class_name, count_view FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE $func  ORDER BY post.date DESC";

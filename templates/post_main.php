@@ -1,25 +1,30 @@
-<?php if (!$post == []): ?>
+<?php if (!$post == []) : ?>
     <div class="container">
         <h1 class="page__title page__title--publication"><?php print($post[0]['title']); ?></h1>
         <section class="post-details">
             <h2 class="visually-hidden">Публикация</h2>
             <div class="post-details__wrapper post-<?php print($post[0]['class_name']); ?>">
                 <div class="post-details__main-block post post--details">
-                    <?php switch ($post[0]['content_id']): ?><?php case 1: ?>
-                        <?= $post_text; ?>
-                        <?php break; ?>
-                    <?php case 2: ?>
-                        <?= $post_quote; ?>
-                        <?php break; ?>
-                    <?php case 3: ?>
-                        <?= $post_photo; ?>
-                        <?php break; ?>
-                    <?php case 4: ?>
-                        <?= $post_video; ?>
-                        <?php break; ?>
-                    <?php case 5: ?>
-                        <?= $post_link; ?>
-                        <?php break; ?>
+                    <?php switch ($post[0]['content_id']):
+                        case 1: ?>
+                            <?= $post_text; ?>
+                            <?php break; ?>
+                        <?php
+                        case 2: ?>
+                            <?= $post_quote; ?>
+                            <?php break; ?>
+                        <?php
+                        case 3: ?>
+                            <?= $post_photo; ?>
+                            <?php break; ?>
+                        <?php
+                        case 4: ?>
+                            <?= $post_video; ?>
+                            <?php break; ?>
+                        <?php
+                        case 5: ?>
+                            <?= $post_link; ?>
+                            <?php break; ?>
                     <?php endswitch; ?>
                     <div class="post__indicators">
                         <div class="post__buttons">
@@ -27,8 +32,7 @@
                                 <svg class="post__indicator-icon" width="20" height="17">
                                     <use xlink:href="#icon-heart"></use>
                                 </svg>
-                                <svg class="post__indicator-icon post__indicator-icon--like-active" width="20"
-                                     height="17">
+                                <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
                                 <span><?php print($post[0]['likes']); ?></span>
@@ -57,8 +61,7 @@
                                 <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
                             </div>
                             <div class="form__input-section form__input-section--error">
-                                <textarea class="comments__textarea form__textarea form__input"
-                                          placeholder="Ваш комментарий"></textarea>
+                                <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий"></textarea>
                                 <label class="visually-hidden">Ваш комментарий</label>
                                 <button class="form__error-button button" type="button">!</button>
                                 <div class="form__error-text">
@@ -73,8 +76,7 @@
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
                                         <a class="user__avatar-link" href="#">
-                                            <img class="comments__picture" src="img/userpic-larisa.jpg"
-                                                 alt="Аватар пользователя">
+                                            <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
                                         </a>
                                     </div>
                                     <div class="comments__info">
@@ -92,8 +94,7 @@
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
                                         <a class="user__avatar-link" href="#">
-                                            <img class="comments__picture" src="img/userpic-larisa.jpg"
-                                                 alt="Аватар пользователя">
+                                            <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
                                         </a>
                                     </div>
                                     <div class="comments__info">
@@ -125,8 +126,7 @@
                     <div class="post-details__user-info user__info">
                         <div class="post-details__avatar user__avatar">
                             <a class="post-details__avatar-link user__avatar-link" href="#">
-                                <img class="post-details__picture user__picture"
-                                     src="img/<?php print($post[0]['avatar']); ?>" alt="Аватар пользователя">
+                                <img class="post-details__picture user__picture" src="img/<?php print($post[0]['avatar']); ?>" alt="Аватар пользователя">
                             </a>
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
@@ -156,6 +156,6 @@
             </div>
         </section>
     </div>
-<?php else: ?>
+<?php else : ?>
     <h1>404 страница не найдена</h1>
 <?php endif; ?>

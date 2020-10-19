@@ -78,7 +78,7 @@
                 <ul class="form__invalid-list">
                     <?php foreach ($errors as $key => $value): ?>
                         <li class="form__invalid-item">
-                            <?php switch ($key): ?><?php case 'email': ?>
+                            <?php switch ($key): case 'email': ?>
                                 Электронная почта.
                                 <?php break; ?>
                             <?php case 'login': ?>

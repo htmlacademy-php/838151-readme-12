@@ -43,7 +43,6 @@
                         <span>Все</span>
                     </a>
                 </li>
-
                 <?php foreach ($type_cont as $key => $val): ?>
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--<?= $val['class_name'] ?> <?php if ($post_index == $val['id']) {
@@ -68,7 +67,7 @@
                     </h2>
                 </header>
                 <div class="post__main">
-                    <?php switch ($val['content_id']): ?><?php case '2': ?>
+                    <?php switch ($val['content_id']): case '2': ?>
                         <blockquote>
                             <p>
                                 <?= htmlspecialchars($val['text']); ?>

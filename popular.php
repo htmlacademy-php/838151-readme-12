@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 if (!isset($_SESSION['id'])) {
@@ -10,6 +9,7 @@ if (!isset($_SESSION['id'])) {
  * cut post text
  * @param string $text
  * @param int $len
+ * @return mixed
  */
 function cutText(string $text, int $len = 300)
 {
@@ -26,9 +26,7 @@ function cutText(string $text, int $len = 300)
         echo '<p>' . implode(" ", $new_text) . " ..." . '</p>
               <a class="post-text__more-link" href="#">Читать далее</a>';
     };
-}
-
-;
+};
 
 $connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
 mysqli_set_charset($connect, "utf8");
@@ -44,28 +42,10 @@ function getContent(object $link)
 {
     $sql = 'SELECT id, title, class_name FROM content';
     return requestDb($sql);
-}
-
-;
-
+};
 
 require_once('helpers.php');
 
-
-$page_content = include_template('/main.php', ['posts' => getPosts($connect, $ind), 'type_cont' => getContent($connect), 'ind' => $ind, 'post_index' => $ind]);
-
+$page_content = include_template('/main.php', ['posts' => getPosts($ind), 'type_cont' => getContent($connect), 'ind' => $ind, 'post_index' => $ind]);
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
-
 print($layout_content);
-
-
-
-
-
-
-
-
-
-
-
-

@@ -53,7 +53,7 @@
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
                                     <?= $post_title; ?>
-                                    <?php switch ($val['class_name']): ?><?php case 'text': ?>
+                                    <?php switch ($val['class_name']): case 'text': ?>
                                         <?= $post_text; ?>
                                         <?php break; ?>
                                     <?php case 'quote': ?>
@@ -121,17 +121,14 @@
                                         </div>
                                         <?php break; ?>
                                     <?php endswitch; ?>
-
-
                                     <?= $post_tags ?>
-
                                 </div>
                                 <div class="form__invalid-block">
                                     <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
                                     <ul class="form__invalid-list">
                                         <?php foreach ($errors as $key => $value): ?>
                                             <li class="form__invalid-item">
-                                                <?php switch ($key): ?><?php case 'post-title': ?>
+                                                <?php switch ($key): case 'post-title': ?>
                                                     Заголовок.
                                                     <?php break; ?>
                                                 <?php case 'post-text': ?>
@@ -184,7 +181,6 @@
                                     </div>
                                     <div
                                         class="adding-post__file adding-post__file--photo form__file dropzone-previews">
-
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -195,12 +191,8 @@
                             </div>
                             <input type="hidden" name="post-type" value="<?= $val['id'] ?>">
                         </form>
-
                     </section>
-
                 <?php endforeach; ?>
-
-
             </div>
         </div>
     </div>

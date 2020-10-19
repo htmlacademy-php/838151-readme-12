@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -181,12 +182,10 @@ function embed_youtube_video($youtube_url)
 {
     $res = "";
     $id = extract_youtube_id($youtube_url);
-
     if ($id) {
         $src = "https://www.youtube.com/embed/" . $id;
         $res = '<iframe width="760" height="400" src="' . $src . '" frameborder="0"></iframe>';
     }
-
     return $res;
 }
 
@@ -199,12 +198,10 @@ function embed_youtube_cover($youtube_url)
 {
     $res = "";
     $id = extract_youtube_id($youtube_url);
-
     if ($id) {
         $src = sprintf("https://img.youtube.com/vi/%s/mqdefault.jpg", $id);
         $res = '<img alt="youtube cover" width="320" height="120" src="' . $src . '" />';
     }
-
     return $res;
 }
 
@@ -216,9 +213,7 @@ function embed_youtube_cover($youtube_url)
 function extract_youtube_id($youtube_url)
 {
     $id = false;
-
     $parts = parse_url($youtube_url);
-
     if ($parts) {
         if ($parts['path'] == '/watch') {
             parse_str($parts['query'], $vars);
@@ -229,7 +224,6 @@ function extract_youtube_id($youtube_url)
             }
         }
     }
-
     return $id;
 }
 
@@ -241,27 +235,25 @@ function generate_random_date($index)
 {
     $deltas = [['minutes' => 59], ['hours' => 23], ['days' => 6], ['weeks' => 4], ['months' => 11]];
     $dcnt = count($deltas);
-
     if ($index < 0) {
         $index = 0;
     }
-
     if ($index >= $dcnt) {
         $index = $dcnt - 1;
     }
-
     $delta = $deltas[$index];
     $timeval = rand(1, current($delta));
     $timename = key($delta);
-
     $ts = strtotime("$timeval $timename ago");
     $dt = date('Y-m-d H:i:s', $ts);
-
     return $dt;
-}
+};
 
-;
-
+/**
+ * request from db
+ * @param string $sql
+ * @return mixed
+ */
 function requestDb($sql)
 {
     $connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
@@ -275,20 +267,18 @@ function requestDb($sql)
             return mysqli_fetch_all($result, MYSQLI_ASSOC);
         }
     }
-
-}
-
-;
+};
 
 /**
- * @param $some_date
+ * return string date
+ * @param date $some_date
+ * @return mixed
  */
 function checkTime($some_date)
 {
     $current_date = date_create("now");
     $publication_date = date_create($some_date);
     $diff = date_diff($current_date, $publication_date);
-
     switch ($diff) {
         case $diff->m > 0:
             print($diff->m . ' ' . get_noun_plural_form($diff->m, 'месяц', 'месяца', 'месяцев') . ' назад');
@@ -306,20 +296,15 @@ function checkTime($some_date)
         case $diff->i > 0:
             print($diff->i . ' ' . get_noun_plural_form($diff->m, 'минуту', 'минуты', 'минут') . ' назад');
             break;
-
-
     };
-
-}
-
-;
+};
 
 /**
  * return posts from db
  * @param string $id
- * @return array
+ * @return mixed
  */
-function getPosts(string $id): array
+function getPosts(string $id)
 {
     $sql = "";
     if ($id) {
@@ -327,8 +312,5 @@ function getPosts(string $id): array
     } else {
         $sql = "SELECT post.title, post.id as post_id, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
     };
-
     return requestDb($sql);
-}
-
-;
+};

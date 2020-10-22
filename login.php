@@ -1,7 +1,4 @@
 <?php
-$is_auth = 0;
-
-$user_name = 'Кирилл'; // укажите здесь ваше имя
 
 $connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
 mysqli_set_charset($connect, "utf8");

@@ -1,10 +1,8 @@
 <div class="adding-post__input-wrapper form__input-wrapper">
     <label class="adding-post__label form__label" for="photo-tags">Теги</label>
     <div class="form__input-section">
-        <input class="adding-post__input form__input" id="photo-tags" type="text"
-               name="post-tags" placeholder="Введите теги" value="<?= getPostVal('post-tags')?>">
-        <button class="form__error-button button" type="button">!<span
-                class="visually-hidden">Информация об ошибке</span></button>
+        <input class="adding-post__input form__input" id="photo-tags" type="text" name="post-tags" placeholder="Введите теги" value="<?= getPostVal('post-tags') ?>">
+        <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
         <div class="form__error-text">
             <h3 class="form__error-title">Заголовок сообщения</h3>
             <p class="form__error-desc">Текст сообщения об ошибке, подробно

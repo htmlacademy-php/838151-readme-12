@@ -1,12 +1,11 @@
 <div class="post__main">
     <div class="post-video__block">
         <div class="post-video__preview">
-            <?= embed_youtube_video($post[0]['video'] ); ?>
-<!--            <img src="img/coast.jpg" alt="Превью к видео" width="760" height="396">-->
+            <?= embed_youtube_video($post[0]['video']); ?>
+            <!--            <img src="img/coast.jpg" alt="Превью к видео" width="760" height="396">-->
         </div>
         <div class="post-video__control">
-            <button class="post-video__play post-video__play--paused button button--video" type="button"><span
-                    class="visually-hidden">Запустить видео</span></button>
+            <button class="post-video__play post-video__play--paused button button--video" type="button"><span class="visually-hidden">Запустить видео</span></button>
             <div class="post-video__scale-wrapper">
                 <div class="post-video__scale">
                     <div class="post-video__bar">

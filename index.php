@@ -34,9 +34,9 @@ function validateFilled(string $name)
 /**
  * validate login
  * @param [type] $name
- * @return string
+ * @return mixed
  */
-function validateLogin($name): string
+function validateLogin($name)
 {
     $sql = "SELECT login FROM users WHERE login = '{$_POST['login']}' ";
     if (empty($_POST[$name])) {

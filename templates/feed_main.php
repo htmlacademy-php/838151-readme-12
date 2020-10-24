@@ -64,9 +64,9 @@
                                             <?php
                                             case 3: ?>
                                                 <div class="post__main">
-                                                    <h2><a href="#"><?= $val['text'] ?></a></h2>
+                                                    <h2><a href="#"><?= $val['title'] ?></a></h2>
                                                     <div class="post-photo__image-wrapper">
-                                                        <img src="uploads/<?= $val['photo'] ?>" alt="Фото от пользователя" width="760" height="396">
+                                                        <img src="uploads/<?= $val['picture'] ?>" alt="Фото от пользователя" width="760" height="396">
                                                     </div>
                                                 </div>
                                                 <?php break; ?>

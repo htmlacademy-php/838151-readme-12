@@ -31,7 +31,7 @@
                             print(' tabs__content--active ');
                         } ?>">
                         <h2 class="visually-hidden">
-                            <?php switch ($val['id']): ?><?php case 1: ?>
+                            <?php switch ($val['id']): case 1: ?>
                                 Форма добавления текста
                                 <? break; ?>
                             <?php case 2: ?>

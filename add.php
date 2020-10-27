@@ -9,13 +9,12 @@ mysqli_set_charset($connect, "utf8");
 
 /**
  * return type content from db
- * @param object $link
- * @return array
+ * @return mixed
  */
-function getContent(object $link): array
+function getContent()
 {
     $sql = 'SELECT id, title, class_name FROM content';
-    requestDb($sql);
+    return requestDb($sql);
 };
 
 /**
@@ -108,11 +107,12 @@ function write(object $link)
         } else {
             $sql = returnSqlRequest("{$_POST['post-type']}", downloadPhoto());
             $result = mysqli_query($link, $sql);
-            $last_id = mysqli_insert_id($link);
-            writeHashtags($_POST['post-tags'], $link, $last_id);
             if (!$result) {
                 print(mysqli_error($link));
             };
+            $last_id = mysqli_insert_id($link);
+            writeHashtags($_POST['post-tags'], $link, $last_id);
+            return $last_id;
         };
     }
 };
@@ -134,9 +134,9 @@ function validateFilled(string $name)
 /**
  * check video from youtube
  * @param string $name
- * @return string
+ * @return mixed
  */
-function checkVideo(string $name): string
+function checkVideo(string $name)
 {
     if (!filter_var($_POST[$name], FILTER_VALIDATE_URL)) {
         return check_youtube_url($_POST[$name]);
@@ -238,8 +238,7 @@ foreach ($_FILES as $key => $value) {
 $errors = array_filter($errors);
 
 if ($_POST && empty($errors)) {
-    write($connect);
-    $new_post_id = mysqli_insert_id($connect);
+    $new_post_id = write($connect);
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: /post.php?id=$new_post_id");
     }
@@ -260,6 +259,6 @@ $post_text = include_template('/add_post_text.php', ['errors' => $errors]);
 $post_quote = include_template('/add_post_quote.php', ['errors' => $errors]);
 $post_author = include_template('/add_post_author.php', ['errors' => $errors]);
 
-$page_content = include_template('/add_main.php', ['type_cont' => getContent($connect), 'errors' => $errors, 'post_title' => $post_title, 'post_tags' => $post_tags, 'post_text' => $post_text, 'post_quote' => $post_quote, 'post_author' => $post_author]);
+$page_content = include_template('/add_main.php', ['type_cont' => getContent(), 'errors' => $errors, 'post_title' => $post_title, 'post_tags' => $post_tags, 'post_text' => $post_text, 'post_quote' => $post_quote, 'post_author' => $post_author]);
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
 print($layout_content);

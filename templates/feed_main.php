@@ -43,7 +43,7 @@
                                         <?php switch ($val['content_id']):
                                             case 1: ?>
                                                 <div class="post__main">
-                                                    <h2><a href="#">Полезный пост про Байкал</a></h2>
+                                                    <h2><a href="#"><a href="#"><?= $val['title'] ?></a></h2>
                                                     <p>
                                                         <?= $val['text'] ?>
                                                     </p>

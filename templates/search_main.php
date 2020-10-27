@@ -72,7 +72,7 @@
                                             <?php switch ($val['content_id']):
                                                 case 1: ?>
                                                     <div class="post__main">
-                                                        <h2><a href="#">Полезный пост про Байкал</a></h2>
+                                                        <h2><a href="/post.php?id=<?= $val['id'] ?>"><?= $val['title'] ?></a></h2>
                                                         <p>
                                                             <?= $val['text'] ?>
                                                         </p>
@@ -130,13 +130,13 @@
                                                 case 5: ?>
                                                     <div class="post__main">
                                                         <div class="post-link__wrapper">
-                                                            <a class="post-link__external" href="http://www.vitadental.ru" title="Перейти по ссылке">
+                                                            <a class="post-link__external" href="<?= $val['link'] ?>" title="Перейти по ссылке">
                                                                 <div class="post-link__icon-wrapper">
                                                                     <img src="img/logo-vita.jpg" alt="Иконка">
                                                                 </div>
                                                                 <div class="post-link__info">
-                                                                    <h3>Стоматология «Вита»</h3>
-                                                                    <p>Семейная стоматология в Адлере</p>
+                                                                    <h3><?= $val['title'] ?></h3>
+                                                                    <p><?= $val['text'] ?></p>
                                                                     <span><?= $val['link'] ?></span>
                                                                 </div>
                                                                 <svg class="post-link__arrow" width="11" height="16">

@@ -7,7 +7,9 @@ mysqli_set_charset($connect, "utf8");
 
 require_once('helpers.php');
 
-require_once('helpers.php');
+// if ($_SESSION['id'] == "") {
+//     header("Location: /");
+// };
 
 /**
  * return input text

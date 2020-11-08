@@ -308,9 +308,46 @@ function getPosts(string $id)
 {
     $sql = "";
     if ($id) {
-        $sql = "SELECT post.title, post.id as post_id, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE content.id = $id ORDER BY post.count_view DESC ";
+        $sql = "SELECT date, post.title, post.id as post_id, likes, (SELECT COUNT(*) FROM comment WHERE comment.post_id = post.id) AS comment, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE content.id = $id ORDER BY post.count_view DESC ";
     } else {
-        $sql = "SELECT post.title, post.id as post_id, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
+        $sql = "SELECT date,  post.title, post.id as post_id, likes, (SELECT COUNT(*) FROM comment WHERE comment.post_id = post.id) AS comment, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
     };
     return requestDb($sql);
+};
+
+/**
+ * checks for likes
+ *
+ * @param [type] $connect
+ * @return boolean
+ */
+function isLike($id)
+{
+    $connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
+    $sql = "SELECT * FROM `like` WHERE like.user = '{$_SESSION['id']}' AND like.post = $id";
+    $result = mysqli_query($connect, $sql);
+    return mysqli_num_rows($result);
+};
+
+function addLike()
+{
+    $connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
+    $is_like = isLike($_GET['id']);
+    $is_post = mysqli_num_rows(mysqli_query($connect, "SELECT * FROM `post` WHERE post.id = '{$_GET['id']}'"));
+    if ($is_like == 0 && $_GET['like'] == 1 && $is_post != 0) {
+        $res1 = mysqli_query($connect, "INSERT `like` (user, post) VALUES ('{$_SESSION['id']}', '{$_GET['id']}')");
+        $res2 = mysqli_query($connect, "UPDATE `post` SET post.likes = post.likes + 1 WHERE post.id = '{$_GET['id']}'");
+        if ($res1 && $res2) {
+            mysqli_query($connect, "COMMIT");
+            $referer = $_SERVER['HTTP_REFERER'];
+            header("Location: $referer");
+        } else {
+            mysqli_query($connect, "ROLLBACK");
+            $referer = $_SERVER['HTTP_REFERER'];
+            header("Location: $referer");
+        };
+    } else if (isset($_GET['like'])) {
+        $referer = $_SERVER['HTTP_REFERER'];
+        header("Location: $referer");
+    };
 };

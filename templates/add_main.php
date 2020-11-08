@@ -1,3 +1,4 @@
+<main class="page__main page__main--adding-post">
 <div class="page__main-section">
     <div class="container">
         <h1 class="page__title page__title--adding-post">Добавить публикацию</h1>
@@ -197,3 +198,4 @@
         </div>
     </div>
 </div>
+</main>

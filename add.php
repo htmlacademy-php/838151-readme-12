@@ -7,6 +7,10 @@ $post_index = $_GET['id'] ?? '';
 $connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
 mysqli_set_charset($connect, "utf8");
 
+if ($_SESSION['id'] == "") {
+    header("Location: /");
+};
+
 /**
  * return type content from db
  * @return mixed
@@ -49,19 +53,19 @@ function returnSqlRequest(int $type, $func): string
 {
     switch ($type) {
         case '1':
-            return "INSERT INTO post (title, TEXT, DATE, user_id, content_id) VALUES ('{$_POST['post-title']}', '{$_POST['post-text']}', NOW(), '1', '{$_POST['post-type']}');";
+            return "INSERT INTO post (title, TEXT, DATE, user_id, content_id) VALUES ('{$_POST['post-title']}', '{$_POST['post-text']}', NOW(), '{$_SESSION['id']}', '{$_POST['post-type']}');";
             break;
         case '2':
-            return "INSERT INTO post (title, TEXT, DATE, user_id, content_id, quote_author) VALUES ('{$_POST['post-title']}', '{$_POST['post-quote-text']}', NOW(), '1', '{$_POST['post-type']}', '{$_POST['post-quote-author']}');";
+            return "INSERT INTO post (title, TEXT, DATE, user_id, content_id, quote_author) VALUES ('{$_POST['post-title']}', '{$_POST['post-quote-text']}', NOW(), '{$_SESSION['id']}', '{$_POST['post-type']}', '{$_POST['post-quote-author']}');";
             break;
         case '3':
-            return "INSERT INTO post (title, DATE, user_id, content_id, picture) VALUES ('{$_POST['post-title']}', NOW(), '1', '{$_POST['post-type']}', '$func');";
+            return "INSERT INTO post (title, DATE, user_id, content_id, picture) VALUES ('{$_POST['post-title']}', NOW(), '{$_SESSION['id']}', '{$_POST['post-type']}', '$func');";
             break;
         case '4':
-            return "INSERT INTO post (title, DATE, user_id, content_id, video) VALUES ('{$_POST['post-title']}', NOW(), '1', '{$_POST['post-type']}', '{$_POST['post-video']}');";
+            return "INSERT INTO post (title, DATE, user_id, content_id, video) VALUES ('{$_POST['post-title']}', NOW(), '{$_SESSION['id']}', '{$_POST['post-type']}', '{$_POST['post-video']}');";
             break;
         case '5':
-            return "INSERT INTO post (title, DATE, user_id, content_id, link) VALUES ('{$_POST['post-title']}', NOW(), '1', '{$_POST['post-type']}', '{$_POST['post-link']}');";
+            return "INSERT INTO post (title, DATE, user_id, content_id, link) VALUES ('{$_POST['post-title']}', NOW(), '{$_SESSION['id']}', '{$_POST['post-type']}', '{$_POST['post-link']}');";
             break;
     }
 };

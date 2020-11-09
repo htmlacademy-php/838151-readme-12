@@ -24,10 +24,10 @@
                 </div>
                 <?php if ($_GET['id'] != $_SESSION['id']) : ?>
                     <div class="profile__user-buttons user__buttons">
-                        <?php if ($subscription[0]['count'] == 0) : ?>
-                            <button class="profile__user-button user__button user__button--subscription button button--main" type="button">Подписаться</button>
+                        <?php if ($subscription == 0) : ?>
+                            <a class="profile__user-button user__button user__button--subscription button button--main" href="/profile.php?id=<?php print($_GET['id']);?>&sub=1">Подписаться</a>
                         <?php else : ?>
-                            <button class="profile__user-button user__button user__button--subscription button button--main" type="button">Отписаться</button>
+                            <a class="profile__user-button user__button user__button--subscription button button--main" href="/profile.php?id=<?php print($_GET['id']);?>&sub=0">Отписаться</a>
                             <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
                         <?php endif; ?>
 

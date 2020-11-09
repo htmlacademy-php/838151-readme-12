@@ -121,7 +121,7 @@
                     </div>
                     <footer class="post__footer">
                         <div class="post__author">
-                            <a class="post__author-link" href="#" title="Автор">
+                            <a class="post__author-link" href="/profile.php?id=<?= $val['user_id'] ?>" title="Автор">
                                 <div class="post__avatar-wrapper">
                                     <!--укажите путь к файлу аватара-->
                                     <img class="post__author-avatar" src="uploads/<?= $val['avatar'] ?>" alt="Аватар пользователя">
@@ -134,21 +134,23 @@
                         </div>
                         <div class="post__indicators">
                             <div class="post__buttons">
-                                <a class="post__indicator post__indicator--likes<?php if(isLike($val['post_id'])){print('-active');}?> button" href="/post.php?id=<?= $val['post_id'];?>&like=1" title="Лайк">
+                                <a class="post__indicator post__indicator--likes<?php if (isLike($val['post_id'])) {
+                                                                                    print('-active');
+                                                                                } ?> button" href="/post.php?id=<?= $val['post_id']; ?>&like=1" title="Лайк">
                                     <svg class="post__indicator-icon" width="20" height="17">
                                         <use xlink:href="#icon-heart"></use>
                                     </svg>
                                     <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                         <use xlink:href="#icon-heart-active"></use>
                                     </svg>
-                                    <span><?= $val['likes']?></span>
+                                    <span><?= $val['likes'] ?></span>
                                     <span class="visually-hidden">количество лайков</span>
                                 </a>
                                 <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                                     <svg class="post__indicator-icon" width="19" height="17">
                                         <use xlink:href="#icon-comment"></use>
                                     </svg>
-                                    <span><?= $val['comment']?></span>
+                                    <span><?= $val['comment'] ?></span>
                                     <span class="visually-hidden">количество комментариев</span>
                                 </a>
                             </div>
@@ -156,6 +158,10 @@
                     </footer>
                 </article>
             <?php endforeach; ?>
+        </div>
+        <div class="popular__page-links">
+            <a class="popular__page-link popular__page-link--prev button button--gray" href="#">Предыдущая страница</a>
+            <a class="popular__page-link popular__page-link--next button button--gray" href="#">Следующая страница</a>
         </div>
     </div>
 </section>

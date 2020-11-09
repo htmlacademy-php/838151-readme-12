@@ -29,31 +29,12 @@ function getUserPosts()
     return requestDb($sql);
 };
 
-function subscription($connect)
+function subscription()
 {
-    $sql = "SELECT * FROM subscription WHERE subscription.subscribed_user = '{$_SESSION['id']}' AND subscription.subscribed_user1 = {$_GET['id']}";
-    return mysqli_num_rows(mysqli_query($connect, $sql));
+    $sql = "SELECT COUNT(*) AS count FROM subscription WHERE subscription.subscribed_user = '{$_SESSION['id']}' AND subscription.subscribed_user1 = {$_GET['id']}";
+    return requestDb($sql);
 };
 
-function addSubscription($connect)
-{
-    if ($_GET['sub'] == 1) {
-        $sql = "INSERT subscription (subscribed_user, subscribed_user1) VALUES ('{$_SESSION['id']}', '{$_GET['id']}')";
-        mysqli_query($connect, $sql);
-    } else if ($_GET['sub'] == 0) {
-        $sql = "DELETE FROM subscription WHERE subscribed_user = '{$_SESSION['id']}' AND subscribed_user1='{$_GET['id']}'";
-        mysqli_query($connect, $sql);
-    }
-};
-
-addSubscription($connect);
-
-print_r(subscription($connect));
-
-//print_r(getUser());
-
-print_r(getUserPosts());
-
-$page_content = include_template('/profile_main.php', ['user' => getUser(), 'posts' => getUserPosts(), 'subscription' => subscription($connect)]);
+$page_content = include_template('/messages_main.php');
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: профиль пользователя']);
 print($layout_content);

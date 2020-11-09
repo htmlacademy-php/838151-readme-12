@@ -308,9 +308,9 @@ function getPosts(string $id)
 {
     $sql = "";
     if ($id) {
-        $sql = "SELECT date, post.title, post.id as post_id, likes, (SELECT COUNT(*) FROM comment WHERE comment.post_id = post.id) AS comment, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE content.id = $id ORDER BY post.count_view DESC ";
+        $sql = "SELECT date, post.title, post.id as post_id, likes, (SELECT COUNT(*) FROM comment WHERE comment.post_id = post.id) AS comment, text, picture, video, link, content_id, avatar, class_name, users.id as user_id, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id WHERE content.id = $id ORDER BY post.count_view DESC ";
     } else {
-        $sql = "SELECT date,  post.title, post.id as post_id, likes, (SELECT COUNT(*) FROM comment WHERE comment.post_id = post.id) AS comment, text, picture, video, link, content_id, avatar, class_name, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
+        $sql = "SELECT date,  post.title, post.id as post_id, likes, (SELECT COUNT(*) FROM comment WHERE comment.post_id = post.id) AS comment, text, picture, video, link, content_id, avatar, class_name, users.id as user_id, name FROM post INNER JOIN users ON post.user_id = users.id INNER JOIN content ON post.content_id = content.id  ORDER BY post.count_view DESC ";
     };
     return requestDb($sql);
 };

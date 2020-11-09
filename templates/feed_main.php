@@ -1,3 +1,4 @@
+<main class="page__main page__main--feed">
 <div class="container">
     <h1 class="page__title page__title--feed">Моя лента</h1>
 </div>
@@ -30,7 +31,7 @@
                                                 <?php break; ?>
                                         <?php endswitch; ?>
                                         <header class="post__header post__author">
-                                            <a class="post__author-link" href="#" title="Автор">
+                                            <a class="post__author-link" href="/profile.php?id=<?= $val['user_id']?>" title="Автор">
                                                 <div class="post__avatar-wrapper">
                                                     <img class="post__author-avatar" src="img/<?= $val['avatar'] ?>" alt="Аватар пользователя" width="60px" height="60px">
                                                 </div>
@@ -43,7 +44,7 @@
                                         <?php switch ($val['content_id']):
                                             case 1: ?>
                                                 <div class="post__main">
-                                                    <h2><a href="#">Полезный пост про Байкал</a></h2>
+                                                    <h2><a href="#"><a href="#"><?= $val['title'] ?></a></h2>
                                                     <p>
                                                         <?= $val['text'] ?>
                                                     </p>
@@ -64,9 +65,9 @@
                                             <?php
                                             case 3: ?>
                                                 <div class="post__main">
-                                                    <h2><a href="#"><?= $val['text'] ?></a></h2>
+                                                    <h2><a href="#"><?= $val['title'] ?></a></h2>
                                                     <div class="post-photo__image-wrapper">
-                                                        <img src="uploads/<?= $val['photo'] ?>" alt="Фото от пользователя" width="760" height="396">
+                                                        <img src="uploads/<?= $val['picture'] ?>" alt="Фото от пользователя" width="760" height="396">
                                                     </div>
                                                 </div>
                                                 <?php break; ?>
@@ -120,7 +121,7 @@
                                         <?php endswitch; ?>
                                         <footer class="post__footer post__indicators">
                                             <div class="post__buttons">
-                                                <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                                                <a class="post__indicator post__indicator--likes<?php if(isLike($val['post_id'])){print('-active');}?> button" href="/post.php?id=<?= $val['post_id'];?>&like=1" title="Лайк">
                                                     <svg class="post__indicator-icon" width="20" height="17">
                                                         <use xlink:href="#icon-heart"></use>
                                                     </svg>
@@ -134,7 +135,7 @@
                                                     <svg class="post__indicator-icon" width="19" height="17">
                                                         <use xlink:href="#icon-comment"></use>
                                                     </svg>
-                                                    <span>25</span>
+                                                    <span><?= $val['comment']?></span>
                                                     <span class="visually-hidden">количество комментариев</span>
                                                 </a>
                                                 <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
@@ -202,3 +203,4 @@
         </article>
     </aside>
 </div>
+<main>

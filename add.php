@@ -7,15 +7,18 @@ $post_index = $_GET['id'] ?? '';
 $connect = mysqli_connect('127.0.0.1', 'root', 'root', 'readme');
 mysqli_set_charset($connect, "utf8");
 
+if ($_SESSION['id'] == "") {
+    header("Location: /");
+};
+
 /**
  * return type content from db
- * @param object $link
- * @return array
+ * @return mixed
  */
-function getContent(object $link): array
+function getContent()
 {
     $sql = 'SELECT id, title, class_name FROM content';
-    requestDb($sql);
+    return requestDb($sql);
 };
 
 /**
@@ -50,19 +53,19 @@ function returnSqlRequest(int $type, $func): string
 {
     switch ($type) {
         case '1':
-            return "INSERT INTO post (title, TEXT, DATE, user_id, content_id) VALUES ('{$_POST['post-title']}', '{$_POST['post-text']}', NOW(), '1', '{$_POST['post-type']}');";
+            return "INSERT INTO post (title, TEXT, DATE, user_id, content_id) VALUES ('{$_POST['post-title']}', '{$_POST['post-text']}', NOW(), '{$_SESSION['id']}', '{$_POST['post-type']}');";
             break;
         case '2':
-            return "INSERT INTO post (title, TEXT, DATE, user_id, content_id, quote_author) VALUES ('{$_POST['post-title']}', '{$_POST['post-quote-text']}', NOW(), '1', '{$_POST['post-type']}', '{$_POST['post-quote-author']}');";
+            return "INSERT INTO post (title, TEXT, DATE, user_id, content_id, quote_author) VALUES ('{$_POST['post-title']}', '{$_POST['post-quote-text']}', NOW(), '{$_SESSION['id']}', '{$_POST['post-type']}', '{$_POST['post-quote-author']}');";
             break;
         case '3':
-            return "INSERT INTO post (title, DATE, user_id, content_id, picture) VALUES ('{$_POST['post-title']}', NOW(), '1', '{$_POST['post-type']}', '$func');";
+            return "INSERT INTO post (title, DATE, user_id, content_id, picture) VALUES ('{$_POST['post-title']}', NOW(), '{$_SESSION['id']}', '{$_POST['post-type']}', '$func');";
             break;
         case '4':
-            return "INSERT INTO post (title, DATE, user_id, content_id, video) VALUES ('{$_POST['post-title']}', NOW(), '1', '{$_POST['post-type']}', '{$_POST['post-video']}');";
+            return "INSERT INTO post (title, DATE, user_id, content_id, video) VALUES ('{$_POST['post-title']}', NOW(), '{$_SESSION['id']}', '{$_POST['post-type']}', '{$_POST['post-video']}');";
             break;
         case '5':
-            return "INSERT INTO post (title, DATE, user_id, content_id, link) VALUES ('{$_POST['post-title']}', NOW(), '1', '{$_POST['post-type']}', '{$_POST['post-link']}');";
+            return "INSERT INTO post (title, DATE, user_id, content_id, link) VALUES ('{$_POST['post-title']}', NOW(), '{$_SESSION['id']}', '{$_POST['post-type']}', '{$_POST['post-link']}');";
             break;
     }
 };
@@ -108,11 +111,12 @@ function write(object $link)
         } else {
             $sql = returnSqlRequest("{$_POST['post-type']}", downloadPhoto());
             $result = mysqli_query($link, $sql);
-            $last_id = mysqli_insert_id($link);
-            writeHashtags($_POST['post-tags'], $link, $last_id);
             if (!$result) {
                 print(mysqli_error($link));
             };
+            $last_id = mysqli_insert_id($link);
+            writeHashtags($_POST['post-tags'], $link, $last_id);
+            return $last_id;
         };
     }
 };
@@ -134,9 +138,9 @@ function validateFilled(string $name)
 /**
  * check video from youtube
  * @param string $name
- * @return string
+ * @return mixed
  */
-function checkVideo(string $name): string
+function checkVideo(string $name)
 {
     if (!filter_var($_POST[$name], FILTER_VALIDATE_URL)) {
         return check_youtube_url($_POST[$name]);
@@ -238,8 +242,7 @@ foreach ($_FILES as $key => $value) {
 $errors = array_filter($errors);
 
 if ($_POST && empty($errors)) {
-    write($connect);
-    $new_post_id = mysqli_insert_id($connect);
+    $new_post_id = write($connect);
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: /post.php?id=$new_post_id");
     }
@@ -260,6 +263,6 @@ $post_text = include_template('/add_post_text.php', ['errors' => $errors]);
 $post_quote = include_template('/add_post_quote.php', ['errors' => $errors]);
 $post_author = include_template('/add_post_author.php', ['errors' => $errors]);
 
-$page_content = include_template('/add_main.php', ['type_cont' => getContent($connect), 'errors' => $errors, 'post_title' => $post_title, 'post_tags' => $post_tags, 'post_text' => $post_text, 'post_quote' => $post_quote, 'post_author' => $post_author]);
+$page_content = include_template('/add_main.php', ['type_cont' => getContent(), 'errors' => $errors, 'post_title' => $post_title, 'post_tags' => $post_tags, 'post_text' => $post_text, 'post_quote' => $post_quote, 'post_author' => $post_author]);
 $layout_content = include_template('/layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'user_name' => 'Кирилл', 'is_auth' => $is_auth]);
 print($layout_content);

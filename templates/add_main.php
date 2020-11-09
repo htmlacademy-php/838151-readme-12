@@ -1,3 +1,4 @@
+<main class="page__main page__main--adding-post">
 <div class="page__main-section">
     <div class="container">
         <h1 class="page__title page__title--adding-post">Добавить публикацию</h1>
@@ -31,7 +32,7 @@
                             print(' tabs__content--active ');
                         } ?>">
                         <h2 class="visually-hidden">
-                            <?php switch ($val['id']): ?><?php case 1: ?>
+                            <?php switch ($val['id']): case 1: ?>
                                 Форма добавления текста
                                 <? break; ?>
                             <?php case 2: ?>
@@ -197,3 +198,4 @@
         </div>
     </div>
 </div>
+</main>

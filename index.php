@@ -7,7 +7,9 @@ mysqli_set_charset($connect, "utf8");
 
 require_once('helpers.php');
 
-require_once('helpers.php');
+// if ($_SESSION['id'] == "") {
+//     header("Location: /");
+// };
 
 /**
  * return input text
@@ -34,9 +36,9 @@ function validateFilled(string $name)
 /**
  * validate login
  * @param [type] $name
- * @return string
+ * @return mixed
  */
-function validateLogin($name): string
+function validateLogin($name)
 {
     $sql = "SELECT login FROM users WHERE login = '{$_POST['login']}' ";
     if (empty($_POST[$name])) {

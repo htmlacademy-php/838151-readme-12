@@ -90,10 +90,10 @@
                 </p>
             </div>
             <?php if (isset($_SESSION)) : ?>
-                <form class="header__search-form form" action="#" method="get">
+                <form class="header__search-form form" action="search.php?search=<?php print($_GET['search']);?>" method="get">
                     <div class="header__search">
                         <label class="visually-hidden">Поиск</label>
-                        <input class="header__search-input form__input" type="search">
+                        <input class="header__search-input form__input" type="search" name="search">
                         <button class="header__search-button button" type="submit">
                             <svg class="header__search-icon" width="18" height="18">
                                 <use xlink:href="#icon-search"></use>
@@ -135,7 +135,7 @@
                             <li class="header__profile">
                                 <a class="header__profile-link" href="#">
                                     <div class="header__avatar-wrapper">
-                                        <img class="header__profile-avatar" src="uploads/<?php (print (requestDb("SELECT avatar FROM users WHERE id = '{$_SESSION['id']}'"))[0]['avatar']); ?>" alt="Аватар профиля">
+                                        <img class="header__profile-avatar" src="uploads/<?php (print((requestDb("SELECT avatar FROM users WHERE id = '{$_SESSION['id']}'"))[0]['avatar'])); ?>" alt="Аватар профиля">
                                     </div>
                                     <div class="header__profile-name">
                                         <span>
@@ -150,7 +150,7 @@
                                     <div class="header__profile-tooltip">
                                         <ul class="header__profile-nav">
                                             <li class="header__profile-nav-item">
-                                                <a class="header__profile-nav-link" href="#">
+                                                <a class="header__profile-nav-link" href="/profile.php?id=<?= $_SESSION['id']?>">
                                                     <span class="header__profile-nav-text">
                                                         Мой профиль
                                                     </span>
@@ -197,9 +197,7 @@
             </div>
         </div>
     </header>
-    <section class="page__main page__main--popular">
         <?= $content; ?>
-    </section>
     <footer class="footer">
         <div class="footer__wrapper">
             <div class="footer__container container">
